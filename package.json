@@ -5,7 +5,9 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build-prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
+    "publish-dev": "ng build --configuration production && cd dist/common-components-library && npm pack && npm publish --registry=https://trialtoh1md.jfrog.io/artifactory/api/npm/jfrog-test-npm/",
     "test": "ng test"
   },
   "private": true,
@@ -23,6 +25,7 @@
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "^19.1.8",
     "@angular/cli": "^19.1.7",
     "@angular/compiler-cli": "^19.1.0",
     "@types/jasmine": "~5.1.0",
@@ -32,6 +35,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "ng-packagr": "^19.1.0",
     "typescript": "~5.7.2"
   }
 }
