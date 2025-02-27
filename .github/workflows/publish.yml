@@ -46,7 +46,7 @@ jobs:
       # Publish to JFrog
       - name: Publish Package to JFrog
         run: |
-            cd projects/common-components-library
+            cd projects/components-library
             npm version 1.0.0-alpha
             cd -
             npm run publish-dev

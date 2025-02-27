@@ -7,7 +7,7 @@
     "build": "ng build",
     "build-prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
-    "publish-dev": "ng build --configuration production && cd dist/common-components-library && npm pack && npm publish --registry=https://trialtoh1md.jfrog.io/artifactory/api/npm/jfrog-test-npm/",
+    "publish-dev": "ng build --configuration production && cd dist/components-library && npm pack && npm publish --registry=https://trialtoh1md.jfrog.io/artifactory/api/npm/jfrog-test-npm/",
     "test": "ng test --watch=false --browsers=ChromeHeadless --code-coverage=true",
     "lint": "ng lint"
   },
