@@ -1,0 +1,41 @@
+<div class="gb-pa-xl">
+  <ion-grid>
+    <ion-row class="ion-justify-content-center gb-mb-3xl">
+      <ion-icon [name]="type + '-outline'" style="font-size: 8rem" />
+    </ion-row>
+    <ion-row class="gb-mb-2xl">
+      <ion-col>
+        <div class="text-xl ion-text-center w600">{{ headerText() }}</div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="text-center">
+        <div class="text-md">{{ bodyText() }}</div>
+      </ion-col>
+    </ion-row>
+    @if (primaryText()) {
+      <ion-row class="gb-mt-4xl">
+        <ion-col>
+          <gb-btn
+            [label]="primaryText()"
+            (click)="closeModal('success')"
+            extraClasses="w-full"
+            identity="success_btn" />
+        </ion-col>
+      </ion-row>
+    }
+    @if (secondaryText()) {
+      <ion-row>
+        <ion-col>
+          <gb-btn
+            [label]="secondaryText()"
+            fill="outline"
+            color="error"
+            (click)="closeModal('cancel')"
+            extraClasses="w-full"
+            identity="cancel_btn" />
+        </ion-col>
+      </ion-row>
+    }
+  </ion-grid>
+</div>
