@@ -1,0 +1,54 @@
+name: Publish Library to JFrog
+
+on:
+  push:
+    branches:
+      - main  # Runs on push to main branch (modify if needed)
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+
+      # Checkout the repo
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Set up Node.js (match the version you use locally)
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # Install Dependencies
+      - name: Install Dependencies
+        run: npm install
+
+      # Run Unit Tests
+      #- name: Run Tests
+      #  run: npm run test
+
+      # Build the Library
+      - name: Build the Library
+        run: npm run build-prod
+
+      # Authenticate to JFrog Artifactory
+      - name: Configure NPM for JFrog
+        run: |
+          echo "@<SCOPE>:registry=https://trialtoh1md.jfrog.io/artifactory/api/npm/jfrog-test-npm/" > ~/.npmrc
+          echo "//trialtoh1md.jfrog.io/artifactory/api/npm/jfrog-test-npm/:_authToken=${{ secrets.JFROG_ACCESS_TOKEN }}" >> ~/.npmrc
+          echo "email=jherrera@bluecorela.com" >> ~/.npmrc
+          echo "registry=https://trialtoh1md.jfrog.io/artifactory/api/npm/jfrog-test-npm/" >> ~/.npmrc
+          echo "always-auth=true" >> ~/.npmrc
+          cat ~/.npmrc
+
+      # Publish to JFrog
+      - name: Publish Package to JFrog
+        run: |
+            cd projects/common-components-library
+            npm version 1.0.0-alpha
+            cd -
+            npm run publish-dev
+        env:
+          JFROG_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS_TOKEN }}

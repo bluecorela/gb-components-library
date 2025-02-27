@@ -8,7 +8,7 @@
 
 # Node
 /node_modules
-projects/components-library/node_modules
+/projects/components-library/node_modules
 npm-debug.log
 yarn-error.log
 
