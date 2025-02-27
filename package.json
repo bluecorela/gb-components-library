@@ -8,7 +8,8 @@
     "build-prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "publish-dev": "ng build --configuration production && cd dist/common-components-library && npm pack && npm publish --registry=https://trialtoh1md.jfrog.io/artifactory/api/npm/jfrog-test-npm/",
-    "test": "ng test"
+    "test": "ng test --watch=false --browsers=ChromeHeadless --code-coverage=true",
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {
@@ -29,6 +30,8 @@
     "@angular/cli": "^19.1.7",
     "@angular/compiler-cli": "^19.1.0",
     "@types/jasmine": "~5.1.0",
+    "angular-eslint": "19.1.0",
+    "eslint": "^9.20.0",
     "jasmine-core": "~5.5.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
@@ -36,6 +39,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "ng-packagr": "^19.1.0",
-    "typescript": "~5.7.2"
+    "typescript": "~5.7.2",
+    "typescript-eslint": "8.23.0"
   }
 }
