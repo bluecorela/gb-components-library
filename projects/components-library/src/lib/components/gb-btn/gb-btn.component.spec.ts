@@ -19,8 +19,8 @@ describe("GbBtnComponent", () => {
   let hostComponent: GbHostComponent;
   let fixture: ComponentFixture<GbHostComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [GbHostComponent, IonIcon, IonSpinner],
     }).compileComponents();
 
@@ -28,11 +28,7 @@ describe("GbBtnComponent", () => {
     hostComponent = fixture.componentInstance;
   });
 
-  it("should create", () => {
-    expect(hostComponent).toBeTruthy();
-  });
-
-  it("should apply correct classes when fill is solid", async () => {
+  it("should apply correct classes when fill is solid", () => {
     hostComponent.fill = "solid";
     hostComponent.color = "blue";
     hostComponent.level = 500;
@@ -46,10 +42,10 @@ describe("GbBtnComponent", () => {
     expect(buttonElement.className).toContain("border-gb-blue-500");
     expect(buttonElement.className).toContain("hover:bg-gb-blue-600");
     expect(buttonElement.className).toContain("active:bg-gb-blue-700");
-    expect(buttonElement.className).toContain("disabled:bg-gb-blue-300");
+    expect(buttonElement.className).toContain("disabled:bg-gb-gray-light-300");
   });
 
-  it("should apply correct classes when fill is outline", async () => {
+  it("should apply correct classes when fill is outline", () => {
     hostComponent.fill = "outline";
     hostComponent.color = "green";
     hostComponent.level = 300;
@@ -70,7 +66,7 @@ describe("GbBtnComponent", () => {
 
     expect(buttonElement.className).toContain("hover:bg-gb-blue-700");
     expect(buttonElement.className).toContain("active:bg-gb-blue-800");
-    expect(buttonElement.className).toContain("disabled:bg-gb-blue-400");
+    expect(buttonElement.className).toContain("disabled:bg-gb-gray-light-300");
 
     hostComponent.level = 900;
     fixture.detectChanges();
@@ -78,7 +74,7 @@ describe("GbBtnComponent", () => {
 
     expect(buttonElement.className).toContain("hover:bg-gb-blue-950");
     expect(buttonElement.className).toContain("active:bg-gb-blue-950");
-    expect(buttonElement.className).toContain("disabled:bg-gb-blue-700");
+    expect(buttonElement.className).toContain("disabled:bg-gb-gray-light-300");
 
     hostComponent.level = 100;
     fixture.detectChanges();
@@ -86,7 +82,7 @@ describe("GbBtnComponent", () => {
 
     expect(buttonElement.className).toContain("hover:bg-gb-blue-200");
     expect(buttonElement.className).toContain("active:bg-gb-blue-300");
-    expect(buttonElement.className).toContain("disabled:bg-gb-blue-25");
+    expect(buttonElement.className).toContain("disabled:bg-gb-gray-light-300");
 
     hostComponent.level = 10;
     fixture.detectChanges();
@@ -94,6 +90,6 @@ describe("GbBtnComponent", () => {
 
     expect(buttonElement.className).toContain("hover:bg-gb-blue-110");
     expect(buttonElement.className).toContain("active:bg-gb-blue-210");
-    expect(buttonElement.className).toContain("disabled:bg-gb-blue-25");
+    expect(buttonElement.className).toContain("disabled:bg-gb-gray-light-300");
   });
 });

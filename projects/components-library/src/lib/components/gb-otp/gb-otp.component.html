@@ -1,0 +1,22 @@
+<p class="text-m text-dark mb-1.5 font-medium">
+  {{translate.instant('COMPONENTS.OTP.CODE')}}
+</p>
+
+<form
+  id="otp-form"
+  class="flex gap-1"
+>
+  @for (num of [0, 1, 2, 3, 4, 5]; track num) {
+    <input
+      #otpInput
+      type="text"
+      [class]="inputClasses()"
+      maxlength="1"
+    />
+  }
+</form>
+@if (errorToken()) {
+  <p class="text-gb-error-500 mt-1.5 text-sm">
+    {{translate.instant('COMPONENTS.OTP.ERROR_CODE')}}
+  </p>
+}
