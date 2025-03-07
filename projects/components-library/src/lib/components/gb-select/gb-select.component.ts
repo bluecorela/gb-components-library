@@ -13,7 +13,7 @@ import { addIcons } from 'ionicons';
 import * as icons from 'ionicons/icons';
 
 // ##### SERVICES
-import { Utils } from 'src/app/stores/utils.service';
+import { Utils } from '../../services/utils.service';
 
 // ##### GB COMPONENTS
 import { GbSelectContentComponent } from '../gb-select-content/gb-select-content.component';

@@ -1,7 +1,7 @@
-@use './theme/colors';
-@use './theme/spacing';
-@use './theme/typography';
-@use './theme/shadows';
+@use './lib/theme/colors.scss';
+@use './lib/theme/spacing';
+@use './lib/theme/typography';
+@use './lib/theme/shadows';
 
 /*
  * App Global CSS
