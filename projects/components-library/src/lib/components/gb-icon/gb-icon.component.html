@@ -1,0 +1,10 @@
+@if (iconLoaded() && !fromSrc()) {
+  <ion-icon
+    [name]="icon()"
+    [color]="color()"
+    [style.font-size]="size()"
+    [class]="size()" />
+}
+@if (fromSrc()) {
+  <ion-icon [src]="iconPath()" [style.font-size]="size()" [class]="size()" />
+}
