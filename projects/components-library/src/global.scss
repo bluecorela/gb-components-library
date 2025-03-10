@@ -61,6 +61,14 @@ ion-toast {
   --border-radius: 6px;
 }
 
+ion-toast::part(button) {
+  font-size: 1em;
+  padding-left: 0;
+  padding-right: 13px;
+  height: 44px;
+  color: #414651;
+}
+
 // @import 'bootstrap/dist/css/bootstrap.min.css';
 @import 'tailgrids/assets/css/tailwind.css';
 

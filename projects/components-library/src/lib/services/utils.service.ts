@@ -61,7 +61,7 @@ export class Utils {
     type,
     header,
     icon,
-    duration = 3000,
+    duration = 5000,
     position = 'top',
     color = 'blue',
   }: {
@@ -103,6 +103,13 @@ export class Utils {
       swipeGesture: 'vertical',
       icon: icn,
       header: header,
+      buttons: [
+        {
+          side: 'end',
+          icon: 'close',
+          role: 'cancel',
+        },
+      ],
     });
     this.activeToast()?.dismiss();
     this.activeToast.update(() => toast);
