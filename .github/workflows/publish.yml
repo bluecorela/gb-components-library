@@ -3,7 +3,10 @@ name: Publish Library to JFrog
 on:
   push:
     branches:
-      - main  # Runs on push to main branch (modify if needed)
+      - feature/*
+      - dev
+      - qa
+      - main
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
@@ -26,8 +29,8 @@ jobs:
         run: npm install
 
       # Run Unit Tests
-      #- name: Run Tests
-      #  run: npm run test
+      - name: Run Tests
+        run: npm run test
 
       # Build the Library
       - name: Build the Library
@@ -36,10 +39,8 @@ jobs:
       # Authenticate to JFrog Artifactory
       - name: Configure NPM for JFrog
         run: |
-          echo "@<SCOPE>:registry=https://trialtoh1md.jfrog.io/artifactory/api/npm/jfrog-test-npm/" > ~/.npmrc
-          echo "//trialtoh1md.jfrog.io/artifactory/api/npm/jfrog-test-npm/:_authToken=${{ secrets.JFROG_ACCESS_TOKEN }}" >> ~/.npmrc
-          echo "email=jherrera@bluecorela.com" >> ~/.npmrc
-          echo "registry=https://trialtoh1md.jfrog.io/artifactory/api/npm/jfrog-test-npm/" >> ~/.npmrc
+          echo "//trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/:_authToken=${{ secrets.JFROG_ACCESS_TOKEN }}" >> ~/.npmrc
+          echo "registry=https://trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/" >> ~/.npmrc
           echo "always-auth=true" >> ~/.npmrc
           cat ~/.npmrc
 
@@ -47,7 +48,7 @@ jobs:
       - name: Publish Package to JFrog
         run: |
             cd projects/components-library
-            npm version 1.0.1-alpha
+            npm version 1.0.0-test
             cd -
             npm run publish-dev
         env:
