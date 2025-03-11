@@ -1,59 +1,100 @@
-# GbComponentsLibrary
+## Setup de la librería para uso local
+Clonamos el repo de la librería, levantamos una terminal en la ruta del proyecto e instalamos los paquetes y las dependencias:
+> `npm i`
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.7.
 
-## Development server
+Luego ejecutamos los siguientes comandos para buildear un empaquetado del proyecto localmente y que nos permita editar el proyecto con livereload.
+> `npm run build`
 
-To start a local development server, run:
+> `npm run watch`
 
-```bash
-ng serve
+Esto nos generará un archivo con una ruta parecida a la siguiente:
+```
+------------------------------------------------
+Built Angular Package
+ - from: /Users/jorgeherrera/Documents/BluecoreStuff/Repos/gb-components-library/projects/components-library
+ - to:   /Users/jorgeherrera/Documents/BluecoreStuff/Repos/gb-components-library/dist/components-library
+------------------------------------------------
+Build at: 2025-03-10T20:51:30.523Z - Time: 954ms1
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Copiamos la ruta:
+> **to:** `/Users/../../dist/components-library`
 
-## Code scaffolding
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Instalación de la librería localmente
+Luego de copiar la ruta, nos dirijimos a nuestro proyecto donde instalaremos la librería.
 
-```bash
-ng generate component component-name
+Utilizando la ruta copiada, ejecutamos el comando de instalación en la terminal:
+> `npm i /Users/../../dist/components-library`
+
+Una vez instalada, debemos poder ver el paquete listado con la ruta local en el archivo `package.json`.
+
+> `Nota: Luego de instalar localmente, no subir los cambios del package.json al remoto.`
+
+
+## Publicación de nuevas versiones al JFrog
+La librería cuenta con un archivo de pipelines que se encarga de empaquetar la librería y publicar las nuevas versiones en el JFrog una vez se ejecuten todos los steps.
+
+> `Nota: Falta configurar el pipeline para que publique la librería con una versión distinta dependiendo del ambiente de desarrollo. Ejemplo: QA, Development, Prod, Feature, etc.`
+
+
+## Factores a considerar para instalar la librería
+### Archivo npmrc
+Este archivo se encarga de explicar a npm en cuáles registry debe encontrar los paquetes a instalar.
+
+En nuestro caso en particular tenemos 2 registries:
+- **npm registry público**
+- **jfrog registry**
+
+Nuestro archivo npmrc debe verse parecido a este:
+```
+registry=https://registry.npmjs.org/
+
+//trialtoh1md.jfrog.io/artifactory/api/npm/jfrog-test-npm/:_authToken=<JFROG_TOKEN>
+email=<JFROG_MAIL>
+registry=https://trialtoh1md.jfrog.io/artifactory/api/npm/jfrog-test-npm/
+always-auth=true
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+> **JFROG_TOKEN**: Este es el token de autenticación que se consigue desde Jfrog, se configura como una variable de entorno del repositorio para consolidar la seguridad del código.
 
-```bash
-ng generate --help
+> **JFROG_MAIL**: Al igual que el token, se configura como variable de entorno, es el correo que se utiliza para acceder al Jfrog.
+
+> `Nota: Para instalar localmente se necesitan ambos valores, estos no deben ser agregados ni pusheados en el PR.` *Se sugiere agregar el token en algún vault para acceso de todos.*
+
+### Archivo angular
+El archivo de configuración `angular.json` del proyecto madre (donde se instala la librería) debe tener habilitada la opción de `preserveSymlinks` en el bloque de código de esta manera:
+```
+"projects": {
+    "app": {
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "preserveSymlinks": true,
+          },
+        }
+      }
+    }
+}
 ```
 
-## Building
+### Errores comúnes
+> **Incompatibilidad de versiones de angular**
 
-To build the project run:
-
-```bash
-ng build
+Cuando nos encontremos con errores de ejecución por parte de angular que especifique que el type de un componente no concuerda con el de la instalación, parecido a este:
+```
+Property '__@ɵINPUT_SIGNAL_BRAND_WRITE_TYPE@1552' does not exist on type 'InputSignal<boolean>'. Did you mean '__@ɵINPUT_SIGNAL_BRAND_WRITE_TYPE@1567'?ngtsc(2551)
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Lo más probable es que la versión de angular instalada en el proyecto no sea la misma que la de la librería.
 
-## Running unit tests
+Para corregir esto debemos borrar el `node_modules` y el `package-lock.json`, y volver a instalar las dependencias de ambos.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+---
 
-```bash
-ng test
-```
+> **Login requerido para acceder a registry**
 
-## Running end-to-end tests
+Si nos encontramos con un error que nos indique que debemos iniciar sesión para instalar los paquetes, debemos revisar el archivo `npmrc` y asegurarnos de haber reemplazado el token de autenticación.
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
