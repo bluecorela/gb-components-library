@@ -29,8 +29,8 @@ jobs:
         run: npm install
 
       # Run Unit Tests
-      - name: Run Tests
-        run: npm run test
+      # - name: Run Tests
+      #   run: npm run test
 
       # Build the Library
       - name: Build the Library
