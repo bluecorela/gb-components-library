@@ -24,6 +24,10 @@ export class GbInputComponent implements OnInit {
     addIcons(icons);
     // ##### EFFECTS
     effect(() => {
+      if (this.value() !== '' && !this.valueLoaded()) {
+        this.model.update(() => this.value());
+        this.valueLoaded.update(() => true);
+      }
       this.valueChange.emit(this.model());
     });
   }
@@ -51,16 +55,17 @@ export class GbInputComponent implements OnInit {
   isShowingPassword = signal(false);
   inType = signal('');
   focused = signal(false);
+  valueLoaded = signal(false);
 
   // ##### METHODS
   togglePass() {
     this.isShowingPassword.update(val => (val = !val));
-    if (this.isShowingPassword()) this.inType.update(val => (val = 'text'));
-    else this.inType.update(val => (val = 'password'));
+    if (this.isShowingPassword()) this.inType.update(() => 'text');
+    else this.inType.update(() => 'password');
   }
 
   wasFocused() {
-    this.focused.update(val => (val = true));
+    this.focused.update(() => true);
   }
 
   // OUTPUTS
@@ -102,7 +107,7 @@ export class GbInputComponent implements OnInit {
 
   // ##### LC HOOKS
   ngOnInit(): void {
-    this.model.update(val => (val = this.value()));
-    this.inType.update(val => (val = this.type()));
+    this.model.update(() => this.value());
+    this.inType.update(() => this.type());
   }
 }
