@@ -46,10 +46,11 @@ jobs:
 
       # Save Build Artifact
       - name: Save Build Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-artifact
           path: dist/components-library
+          retention-days: 1
 
 
 # ----------------- SETS A VERSION NUMBER -----------------
@@ -69,7 +70,7 @@ jobs:
     if: github.ref == 'refs/heads/dev'
     steps:
       - name: Download Build Artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: build-artifact
           path: dist/components-library
@@ -92,7 +93,7 @@ jobs:
     if: github.ref == 'refs/heads/qa'
     steps:
       - name: Download Build Artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: build-artifact
           path: dist/components-library
@@ -115,7 +116,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Download Build Artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: build-artifact
           path: dist/components-library
@@ -130,7 +131,7 @@ jobs:
         env:
           JFROG_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS_TOKEN }}
 
-          
+
 # ----------------- DEPLOYS THE LIBRARY TO JFROG FEATURE -----------------
   deploy-feature:
     needs: [build, versioning]
@@ -138,7 +139,7 @@ jobs:
     if: startsWith(github.ref, 'refs/heads/feature/')
     steps:
       - name: Download Build Artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: build-artifact
           path: dist/components-library
