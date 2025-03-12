@@ -10,10 +10,10 @@ on:
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
-  build-and-publish:
+# ----------------- BUILDS THE LIBRARY -----------------
+  build:
     runs-on: ubuntu-latest
     steps:
-
       # Checkout the repo
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -44,12 +44,111 @@ jobs:
           echo "always-auth=true" >> ~/.npmrc
           cat ~/.npmrc
 
-      # Publish to JFrog
-      - name: Publish Package to JFrog
+      # Save Build Artifact
+      - name: Save Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifact
+          path: dist/components-library
+
+
+# ----------------- SETS A VERSION NUMBER -----------------
+  versioning:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate version number
         run: |
-            cd projects/components-library
-            npm version 1.0.0-test
-            cd -
-            npm run publish-dev
+          echo "BUILD_NUMBER=${{ github.run_number }}" >> $GITHUB_ENV
+
+
+# ----------------- DEPLOYS THE LIBRARY TO JFROG DEV -----------------
+  deploy-dev:
+    needs: [build, versioning]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/dev'
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifact
+          path: dist/components-library
+      - name: Publish Package to JFrog | Dev
+        run: |
+          VERSION="build-$BUILD_NUMBER-dev"
+          cd projects/components-library
+          npm version $VERSION
+          cd -
+          echo "Publishing $VERSION to Dev..."
+          npm run publish
+        env:
+          JFROG_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS_TOKEN }}
+
+
+# ----------------- DEPLOYS THE LIBRARY TO JFROG QA -----------------
+  deploy-qa:
+    needs: [build, versioning]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/qa'
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifact
+          path: dist/components-library
+      - name: Publish Package to JFrog | QA
+        run: |
+          VERSION="build-$BUILD_NUMBER-qa"
+          cd projects/components-library
+          npm version $VERSION
+          cd -
+          echo "Publishing $VERSION to QA..."
+          npm run publish
+        env:
+          JFROG_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS_TOKEN }}
+
+
+# ----------------- DEPLOYS THE LIBRARY TO JFROG PROD -----------------
+  deploy-prod:
+    needs: [build, versioning]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifact
+          path: dist/components-library
+      - name: Publish Package to JFrog | Prod
+        run: |
+          VERSION="build-$BUILD_NUMBER-prod"
+          cd projects/components-library
+          npm version $VERSION
+          cd -
+          echo "Publishing $VERSION to Prod..."
+          npm run publish
+        env:
+          JFROG_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS_TOKEN }}
+
+          
+# ----------------- DEPLOYS THE LIBRARY TO JFROG FEATURE -----------------
+  deploy-feature:
+    needs: [build, versioning]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/heads/feature/')
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifact
+          path: dist/components-library
+      - name: Publish Package to JFrog | Feature
+        run: |
+          VERSION="build-$BUILD_NUMBER-feat"
+          cd projects/components-library
+          npm version $VERSION
+          cd -
+          echo "Publishing $VERSION to Feature..."
+          npm run publish
         env:
           JFROG_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS_TOKEN }}
