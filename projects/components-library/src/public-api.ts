@@ -12,6 +12,7 @@ export * from './lib/components/gb-select/gb-select.component';
 export * from './lib/components/gb-progress-bar/gb-progress-bar.component';
 export * from './lib/components/gb-icon/gb-icon.component';
 export * from './lib/components/gb-otp/gb-otp.component';
+export * from './lib/components/gb-stepper/gb-stepper.component';
 
 //SERVICES
 export * from './lib/services/utils.service';
