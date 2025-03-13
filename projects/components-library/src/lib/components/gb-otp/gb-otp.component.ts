@@ -10,8 +10,8 @@ import {
   input,
   output,
 } from "@angular/core";
-import { REGEX } from "../../constants/regex";
 import { TranslateService } from "@ngx-translate/core";
+import { REGEX } from "../../constants/regex";
 
 // ##### TYPES
 export const KeyboardEventsEnum = {
@@ -27,7 +27,7 @@ type KeyboardEventsEnum = (typeof KeyboardEventsEnum)[keyof typeof KeyboardEvent
 @Component({
   selector: "gb-otp",
   templateUrl: "./gb-otp.component.html",
-  styleUrl: "./gb-otp.component.css",
+  styleUrl: "./gb-otp.component.scss",
 })
 export class GbOtpComponent implements AfterViewInit {
   public translate = inject(TranslateService);
@@ -36,7 +36,9 @@ export class GbOtpComponent implements AfterViewInit {
 
   // #####INPUTS
   readValue = input<string>("");
+  label = input<string>("");
   errorToken = input<boolean>(false);
+  errorHint = input("");
 
   // ##### OUTPUTS
   valueChange = output<string>();
@@ -44,7 +46,7 @@ export class GbOtpComponent implements AfterViewInit {
   // ### COMPUTED
   inputClasses = computed(() => {
     const baseClass: string =
-      "shadow-xs flex w-12 sm:w-16 md:w-20 lg:w-24 xl:w-32 2xl:w-40 items-center justify-center rounded-lg border border-stroke bg-gb-gray-light-25 p-2 text-center text-2xl font-medium text-gb-gray-dark-900 outline-none sm:text-4xl";
+      "w-full shadow-xs items-center justify-center rounded-lg border border-stroke bg-gb-gray-light-25 p-2 text-center text-2xl font-medium text-gb-gray-dark-900 outline-none sm:text-4xl";
     let finalClass: string = baseClass;
 
     if (this.errorToken()) {
@@ -69,10 +71,14 @@ export class GbOtpComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.setInputValues();
     this.otpInputs.forEach((input) => {
-      input.nativeElement.addEventListener(KeyboardEventsEnum.KEYDOWN, (event: KeyboardEvent) => this.handleKeyDown(event));
+      input.nativeElement.addEventListener(KeyboardEventsEnum.KEYDOWN, (event: KeyboardEvent) =>
+        this.handleKeyDown(event),
+      );
       input.nativeElement.addEventListener(KeyboardEventsEnum.INPUT, (event: Event) => this.handleInput(event));
       input.nativeElement.addEventListener(KeyboardEventsEnum.FOCUS, (event: Event) => this.handleFocus(event));
-      input.nativeElement.addEventListener(KeyboardEventsEnum.PASTE, (event: ClipboardEvent) => this.handlePaste(event));
+      input.nativeElement.addEventListener(KeyboardEventsEnum.PASTE, (event: ClipboardEvent) =>
+        this.handlePaste(event),
+      );
       input.nativeElement.addEventListener(KeyboardEventsEnum.MOUSE_DOWN, (event: MouseEvent) => {
         if (event.button === 0 && input.nativeElement.value !== "") {
           input.nativeElement.focus();

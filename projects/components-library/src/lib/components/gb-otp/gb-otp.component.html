@@ -1,11 +1,9 @@
-<p class="text-m text-dark mb-1.5 font-medium">
-  {{translate.instant('COMPONENTS.OTP.CODE')}}
-</p>
-
-<form
-  id="otp-form"
-  class="flex gap-1"
->
+@if (label() !== "") {
+  <label class="text-dark gb-mb-md block text-base font-medium">
+    {{ label() }}
+  </label>
+}
+<div class="flex flex-row justify-center gap-1" data-test="otp-inputs">
   @for (num of [0, 1, 2, 3, 4, 5]; track num) {
     <input
       #otpInput
@@ -14,9 +12,9 @@
       maxlength="1"
     />
   }
-</form>
-@if (errorToken()) {
-  <p class="text-gb-error-500 mt-1.5 text-sm">
-    {{translate.instant('COMPONENTS.OTP.ERROR_CODE')}}
+</div>
+@if (errorToken() && errorHint() !== "") {
+  <p class="text-gb-error-500 gb-mt-md text-sm">
+    {{ errorHint() }}
   </p>
 }
