@@ -10,60 +10,8 @@ on:
   workflow_dispatch: # Allows manual triggering
 
 jobs:
-  # ----------------- BUILDS THE LIBRARY -----------------
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      # Checkout the repo
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      # Set up Node.js (match the version you use locally)
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      # Install Dependencies
-      - name: Install Dependencies
-        run: npm install
-
-      # Run Unit Tests
-      # - name: Run Tests
-      #   run: npm run test
-
-      # Build the Library
-      - name: Build the Library
-        run: npm run build-prod
-
-      # Authenticate to JFrog Artifactory
-      - name: Configure NPM for JFrog
-        run: |
-          echo "//trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/:_authToken=${{ secrets.JFROG_ACCESS_TOKEN }}" >> ~/.npmrc
-          echo "registry=https://trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/" >> ~/.npmrc
-          echo "always-auth=true" >> ~/.npmrc
-          cat ~/.npmrc
-
-      # Save Build Artifact
-      - name: Save Build Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-artifact
-          path: dist/components-library
-          retention-days: 1
-
-  # ----------------- SETS A VERSION NUMBER -----------------
-  versioning:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Generate version number
-        run: |
-          echo "BUILD_NUMBER=${{ github.run_number }}" >> $GITHUB_ENV
-
-  # ----------------- DEPLOYS THE LIBRARY TO JFROG DEV -----------------
+  # ------------------------ DEPLOYS THE LIBRARY TO JFROG DEV ------------------------ #
   deploy-dev:
-    needs: [build, versioning]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/dev'
     steps:
@@ -83,9 +31,8 @@ jobs:
         env:
           JFROG_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS_TOKEN }}
 
-  # ----------------- DEPLOYS THE LIBRARY TO JFROG QA -----------------
+  # ----------------- DEPLOYS THE LIBRARY TO JFROG QA ------------------------ #
   deploy-qa:
-    needs: [build, versioning]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/qa'
     steps:
@@ -105,28 +52,37 @@ jobs:
         env:
           JFROG_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS_TOKEN }}
 
-  # ----------------- DEPLOYS THE LIBRARY TO JFROG PROD -----------------
+  # ----------------- DEPLOYS THE LIBRARY TO JFROG PROD ------------------------ #
   deploy-prod:
-    needs: [build, versioning]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
-      - name: Download Build Artifact
-        uses: actions/download-artifact@v4
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          name: build-artifact
-          path: dist/components-library
+          node-version: 22
+      - name: Install Dependencies
+        run: npm install
+      - name: Build the Library
+        run: npm run build-prod
+      - name: Configure NPM for JFrog
+        run: |
+          echo "//trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/:_authToken=${{ secrets.JFROG_ACCESS_TOKEN }}" >> ~/.npmrc
+          echo "registry=https://trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/" >> ~/.npmrc
+          echo "always-auth=true" >> ~/.npmrc
+          cat ~/.npmrc
       - name: Publish Package to JFrog | Prod
         run: |
           VERSION="${{github.run_number}}-prod"
           echo "Publishing $VERSION to Prod..."
-          cd dist/components-library && npm pack && npm publish --tag $VERSION --registry=https://trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/
+          npm run publish
         env:
           JFROG_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS_TOKEN }}
 
-  # ----------------- DEPLOYS THE LIBRARY TO JFROG FEATURE -----------------
+  # ----------------- DEPLOYS THE LIBRARY TO JFROG FEATURE ------------------------ #
   deploy-feature:
-    needs: [build, versioning]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/heads/feature/')
     steps:
