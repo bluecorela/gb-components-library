@@ -76,6 +76,9 @@ jobs:
       - name: Publish Package to JFrog | Prod
         run: |
           VERSION="${{github.run_number}}-prod"
+          cd projects/components-library
+          npm version $VERSION
+          cd -
           echo "Publishing $VERSION to Prod..."
           npm run publish
         env:
