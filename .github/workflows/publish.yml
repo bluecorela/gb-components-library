@@ -75,7 +75,7 @@ jobs:
           cat ~/.npmrc
       - name: Publish Package to JFrog | Prod
         run: |
-          VERSION="${{github.run_number}}-prod"
+          VERSION="1.0.${{github.run_number}}-prod"
           cd projects/components-library
           npm version $VERSION
           cd -
