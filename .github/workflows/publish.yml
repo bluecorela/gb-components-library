@@ -124,7 +124,7 @@ jobs:
         run: |
           VERSION="${{github.run_number}}-prod"
           echo "Publishing $VERSION to Prod..."
-          npm run publish
+          ng build --configuration production && cd dist/components-library && npm pack && npm publish --tag $VERSION --registry=https://trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/
         env:
           JFROG_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS_TOKEN }}
 
