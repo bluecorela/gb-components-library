@@ -45,12 +45,12 @@ jobs:
           cat ~/.npmrc
 
       # Save Build Artifact
-      - name: Save Build Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-artifact
-          path: dist/components-library
-          retention-days: 1
+      # - name: Save Build Artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: build-artifact
+      #     path: dist/components-library
+      #     retention-days: 1
 
   # ----------------- SETS A VERSION NUMBER -----------------
   versioning:
@@ -115,11 +115,11 @@ jobs:
         run: pwd  # ✅ This will print the current working directory
       - name: List Files in Current Directory
         run: ls -la
-      - name: Download Build Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build-artifact
-          path: dist/components-library
+      # - name: Download Build Artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: build-artifact
+      #     path: dist/components-library
       - name: Publish Package to JFrog | Prod
         run: |
           VERSION="${{github.run_number}}-prod"
