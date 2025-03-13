@@ -7,10 +7,10 @@ on:
       - dev
       - qa
       - main
-  workflow_dispatch:  # Allows manual triggering
+  workflow_dispatch: # Allows manual triggering
 
 jobs:
-# ----------------- BUILDS THE LIBRARY -----------------
+  # ----------------- BUILDS THE LIBRARY -----------------
   build:
     runs-on: ubuntu-latest
     steps:
@@ -52,8 +52,7 @@ jobs:
           path: dist/components-library
           retention-days: 1
 
-
-# ----------------- SETS A VERSION NUMBER -----------------
+  # ----------------- SETS A VERSION NUMBER -----------------
   versioning:
     needs: build
     runs-on: ubuntu-latest
@@ -62,8 +61,7 @@ jobs:
         run: |
           echo "BUILD_NUMBER=${{ github.run_number }}" >> $GITHUB_ENV
 
-
-# ----------------- DEPLOYS THE LIBRARY TO JFROG DEV -----------------
+  # ----------------- DEPLOYS THE LIBRARY TO JFROG DEV -----------------
   deploy-dev:
     needs: [build, versioning]
     runs-on: ubuntu-latest
@@ -76,7 +74,7 @@ jobs:
           path: dist/components-library
       - name: Publish Package to JFrog | Dev
         run: |
-          VERSION="build-$BUILD_NUMBER-dev"
+          VERSION="${{github.run_number}}-dev"
           cd projects/components-library
           npm version $VERSION
           cd -
@@ -85,8 +83,7 @@ jobs:
         env:
           JFROG_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS_TOKEN }}
 
-
-# ----------------- DEPLOYS THE LIBRARY TO JFROG QA -----------------
+  # ----------------- DEPLOYS THE LIBRARY TO JFROG QA -----------------
   deploy-qa:
     needs: [build, versioning]
     runs-on: ubuntu-latest
@@ -99,7 +96,7 @@ jobs:
           path: dist/components-library
       - name: Publish Package to JFrog | QA
         run: |
-          VERSION="build-$BUILD_NUMBER-qa"
+          VERSION="${{github.run_number}}-qa"
           cd projects/components-library
           npm version $VERSION
           cd -
@@ -108,8 +105,7 @@ jobs:
         env:
           JFROG_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS_TOKEN }}
 
-
-# ----------------- DEPLOYS THE LIBRARY TO JFROG PROD -----------------
+  # ----------------- DEPLOYS THE LIBRARY TO JFROG PROD -----------------
   deploy-prod:
     needs: [build, versioning]
     runs-on: ubuntu-latest
@@ -122,7 +118,7 @@ jobs:
           path: dist/components-library
       - name: Publish Package to JFrog | Prod
         run: |
-          VERSION="build-$BUILD_NUMBER-prod"
+          VERSION="${{github.run_number}}-prod"
           cd projects/components-library
           npm version $VERSION
           cd -
@@ -131,8 +127,7 @@ jobs:
         env:
           JFROG_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS_TOKEN }}
 
-
-# ----------------- DEPLOYS THE LIBRARY TO JFROG FEATURE -----------------
+  # ----------------- DEPLOYS THE LIBRARY TO JFROG FEATURE -----------------
   deploy-feature:
     needs: [build, versioning]
     runs-on: ubuntu-latest
@@ -145,7 +140,7 @@ jobs:
           path: dist/components-library
       - name: Publish Package to JFrog | Feature
         run: |
-          VERSION="build-$BUILD_NUMBER-feat"
+          VERSION="${{github.run_number}}-feat"
           cd projects/components-library
           npm version $VERSION
           cd -
