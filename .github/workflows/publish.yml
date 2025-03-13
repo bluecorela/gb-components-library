@@ -15,14 +15,25 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/dev'
     steps:
-      - name: Download Build Artifact
-        uses: actions/download-artifact@v4
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          name: build-artifact
-          path: dist/components-library
+          node-version: 22
+      - name: Install Dependencies
+        run: npm install
+      - name: Build the Library
+        run: npm run build-prod
+      - name: Configure NPM for JFrog
+        run: |
+          echo "//trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/:_authToken=${{ secrets.JFROG_ACCESS_TOKEN }}" >> ~/.npmrc
+          echo "registry=https://trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/" >> ~/.npmrc
+          echo "always-auth=true" >> ~/.npmrc
+          cat ~/.npmrc
       - name: Publish Package to JFrog | Dev
         run: |
-          VERSION="${{github.run_number}}-dev"
+          VERSION="1.0.${{github.run_number}}-dev"
           cd projects/components-library
           npm version $VERSION
           cd -
@@ -36,14 +47,25 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/qa'
     steps:
-      - name: Download Build Artifact
-        uses: actions/download-artifact@v4
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          name: build-artifact
-          path: dist/components-library
+          node-version: 22
+      - name: Install Dependencies
+        run: npm install
+      - name: Build the Library
+        run: npm run build-prod
+      - name: Configure NPM for JFrog
+        run: |
+          echo "//trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/:_authToken=${{ secrets.JFROG_ACCESS_TOKEN }}" >> ~/.npmrc
+          echo "registry=https://trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/" >> ~/.npmrc
+          echo "always-auth=true" >> ~/.npmrc
+          cat ~/.npmrc
       - name: Publish Package to JFrog | QA
         run: |
-          VERSION="${{github.run_number}}-qa"
+          VERSION="1.0.${{github.run_number}}-qa"
           cd projects/components-library
           npm version $VERSION
           cd -
@@ -89,14 +111,25 @@ jobs:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/heads/feature/')
     steps:
-      - name: Download Build Artifact
-        uses: actions/download-artifact@v4
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          name: build-artifact
-          path: dist/components-library
+          node-version: 22
+      - name: Install Dependencies
+        run: npm install
+      - name: Build the Library
+        run: npm run build-prod
+      - name: Configure NPM for JFrog
+        run: |
+          echo "//trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/:_authToken=${{ secrets.JFROG_ACCESS_TOKEN }}" >> ~/.npmrc
+          echo "registry=https://trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/" >> ~/.npmrc
+          echo "always-auth=true" >> ~/.npmrc
+          cat ~/.npmrc
       - name: Publish Package to JFrog | Feature
         run: |
-          VERSION="${{github.run_number}}-feat"
+          VERSION="1.0.${{github.run_number}}-feat"
           cd projects/components-library
           npm version $VERSION
           cd -
