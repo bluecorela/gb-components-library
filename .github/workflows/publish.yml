@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - feature/*
-      - dev
+      - development
       - qa
       - main
   workflow_dispatch: # Allows manual triggering
@@ -13,7 +13,7 @@ jobs:
   # ------------------------ DEPLOYS THE LIBRARY TO JFROG DEV ------------------------ #
   deploy-dev:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/dev'
+    if: github.ref == 'refs/heads/development'
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
