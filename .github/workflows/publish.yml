@@ -45,12 +45,12 @@ jobs:
           cat ~/.npmrc
 
       # Save Build Artifact
-      # - name: Save Build Artifact
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: build-artifact
-      #     path: dist/components-library
-      #     retention-days: 1
+      - name: Save Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: dist/components-library
+          retention-days: 1
 
   # ----------------- SETS A VERSION NUMBER -----------------
   versioning:
@@ -111,20 +111,16 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
-      - name: Show Current Directory
-        run: pwd  # ✅ This will print the current working directory
-      - name: List Files in Current Directory
-        run: ls -la
-      # - name: Download Build Artifact
-      #   uses: actions/download-artifact@v4
-      #   with:
-      #     name: build-artifact
-      #     path: dist/components-library
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifact
+          path: dist/components-library
       - name: Publish Package to JFrog | Prod
         run: |
           VERSION="${{github.run_number}}-prod"
           echo "Publishing $VERSION to Prod..."
-          ng build --configuration production && cd dist/components-library && npm pack && npm publish --tag $VERSION --registry=https://trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/
+          cd dist/components-library && npm pack && npm publish --tag $VERSION --registry=https://trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/
         env:
           JFROG_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS_TOKEN }}
 
