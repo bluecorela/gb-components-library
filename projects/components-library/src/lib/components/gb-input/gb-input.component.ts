@@ -24,14 +24,18 @@ export class GbInputComponent implements OnInit {
     addIcons(icons);
     // ##### EFFECTS
     effect(() => {
+      if (this.value() !== '' && !this.valueLoaded()) {
+        this.model.update(() => this.value());
+        this.valueLoaded.update(() => true);
+      }
       this.valueChange.emit(this.model());
     });
   }
   // ##### INPUTS
   type = input<'text' | 'password' | 'email' | 'number'>('text');
-  label = input('')
-  errHint = input('')
-  okHint = input('')
+  label = input('');
+  errHint = input('');
+  okHint = input('');
   placeholder = input('');
   value = input.required<string>();
   color = input('blue');
@@ -40,27 +44,31 @@ export class GbInputComponent implements OnInit {
   disabled = input(false);
   extraClasses = input('');
   passwordToggle = input(false);
-  regex = input<string>();
+  regex = input<string | string[]>('');
   required = input(false);
   min = input<number>();
   max = input<number>();
   identity = input('');
+  regexMessages = input<string[]>();
 
   // ##### SIGNALS
   model = signal<string>('');
   isShowingPassword = signal(false);
   inType = signal('');
   focused = signal(false);
+  isFocus = signal(false);
+  valueLoaded = signal(false);
 
   // ##### METHODS
   togglePass() {
     this.isShowingPassword.update(val => (val = !val));
-    if (this.isShowingPassword()) this.inType.update(val => (val = 'text'));
-    else this.inType.update(val => (val = 'password'));
+    if (this.isShowingPassword()) this.inType.update(() => 'text');
+    else this.inType.update(() => 'password');
   }
 
   wasFocused() {
-    this.focused.update(val => (val = true));
+    this.focused.update(() => true);
+    this.isFocus.update(val => (val = !val));
   }
 
   // OUTPUTS
@@ -75,9 +83,8 @@ export class GbInputComponent implements OnInit {
     else classes += ` pl-3`;
     classes += ` focus:border-gb-${color}-${level}`;
     if ((this.regex() || this.min() || this.max()) && this.model()) {
-      if (this.isValid())
-        classes += ' focus:border-gb-success-500 border-gb-success-500';
-      else classes += ' focus:border-gb-error-500 border-gb-error-500';
+      if (!this.isValid())
+        classes += ' focus:border-gb-error-500 border-gb-error-500';
     }
     if (this.required() && !this.model() && this.focused()) {
       classes += ' focus:border-gb-error-500 border-gb-error-500';
@@ -89,20 +96,26 @@ export class GbInputComponent implements OnInit {
 
   isValid() {
     const regex = this.regex();
+    const regexArray = Array.isArray(regex) ? regex : [regex];
     const min = this.min();
     const max = this.max();
-    if (regex) {
-      const reg = new RegExp(regex);
-      return reg.test(`${this.model()}`);
-    }
+    if (regex) return this.validateRegex(regexArray);
     if (min != undefined && parseFloat(this.model()) < min) return false;
     if (max != undefined && parseFloat(this.model()) > max) return false;
     return true;
   }
 
+  validateRegex(rgx: string[]) {
+    for (let rx of rgx) {
+      const reg = new RegExp(rx);
+      if (!reg.test(`${this.model()}`)) return false;
+    }
+    return true;
+  }
+
   // ##### LC HOOKS
   ngOnInit(): void {
-    this.model.update(val => (val = this.value()));
-    this.inType.update(val => (val = this.type()));
+    this.model.update(() => this.value());
+    this.inType.update(() => this.type());
   }
 }
