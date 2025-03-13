@@ -45,12 +45,12 @@ jobs:
           cat ~/.npmrc
 
       # Save Build Artifact
-      - name: Save Build Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-artifact
-          path: dist/components-library
-          retention-days: 1
+      # - name: Save Build Artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: build-artifact
+      #     path: dist/components-library
+      #     retention-days: 1
 
   # ----------------- SETS A VERSION NUMBER -----------------
   versioning:
@@ -67,11 +67,11 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/dev'
     steps:
-      - name: Download Build Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build-artifact
-          path: dist/components-library
+      # - name: Download Build Artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: build-artifact
+      #     path: dist/components-library
       - name: Publish Package to JFrog | Dev
         run: |
           VERSION="${{github.run_number}}-dev"
@@ -89,11 +89,11 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/qa'
     steps:
-      - name: Download Build Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build-artifact
-          path: dist/components-library
+      # - name: Download Build Artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: build-artifact
+      #     path: dist/components-library
       - name: Publish Package to JFrog | QA
         run: |
           VERSION="${{github.run_number}}-qa"
@@ -111,11 +111,11 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
-      - name: Download Build Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build-artifact
-          path: dist/components-library
+      # - name: Download Build Artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: build-artifact
+      #     path: dist/components-library
       - name: Publish Package to JFrog | Prod
         run: |
           VERSION="${{github.run_number}}-prod"
@@ -133,11 +133,11 @@ jobs:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/heads/feature/')
     steps:
-      - name: Download Build Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build-artifact
-          path: dist/components-library
+      # - name: Download Build Artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: build-artifact
+      #     path: dist/components-library
       - name: Publish Package to JFrog | Feature
         run: |
           VERSION="${{github.run_number}}-feat"
