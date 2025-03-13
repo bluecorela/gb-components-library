@@ -111,6 +111,10 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
+      - name: Show Current Directory
+        run: pwd  # ✅ This will print the current working directory
+      - name: List Files in Current Directory
+        run: ls -la
       - name: Download Build Artifact
         uses: actions/download-artifact@v4
         with:
