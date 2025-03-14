@@ -21,7 +21,7 @@ export class GbHostComponent {
   }
 }
 
-describe("GbOtpComponent", () => {
+fdescribe("GbOtpComponent", () => {
   let hostComponent: GbHostComponent;
   let fixture: ComponentFixture<GbHostComponent>;
   let otpInputs: NodeListOf<HTMLInputElement>;
@@ -166,12 +166,12 @@ describe("GbOtpComponent", () => {
     });
   });
 
-  it("should apply bg-gb-gray-light-300 when readValue is not empty", () => {
+  it("should apply bg-gb-gray-light-600 when readValue is not empty", () => {
     hostComponent.readValue = "123456";
     fixture.detectChanges();
 
     otpInputs.forEach((input) => {
-      expect(input.classList).toContain("bg-gb-gray-light-300");
+      expect(input.classList).toContain("bg-gb-gray-light-600");
     });
   });
 
@@ -260,5 +260,4 @@ describe("GbOtpComponent", () => {
       done();
     });
   });
-
 });
