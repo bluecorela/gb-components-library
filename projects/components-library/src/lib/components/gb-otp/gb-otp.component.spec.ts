@@ -21,7 +21,7 @@ export class GbHostComponent {
   }
 }
 
-fdescribe("GbOtpComponent", () => {
+describe("GbOtpComponent", () => {
   let hostComponent: GbHostComponent;
   let fixture: ComponentFixture<GbHostComponent>;
   let otpInputs: NodeListOf<HTMLInputElement>;
