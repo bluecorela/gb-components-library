@@ -46,7 +46,7 @@ export class GbOtpComponent implements AfterViewInit {
   // ### COMPUTED
   inputClasses = computed(() => {
     const baseClass: string =
-      "w-full shadow-xs items-center justify-center rounded-lg border border-stroke bg-gb-gray-light-400 p-2 text-center text-2xl font-medium text-gb-gray-dark-900 outline-none sm:text-4xl";
+      "w-full shadow-xs items-center justify-center rounded-lg border border-stroke bg-white p-2 text-center text-2xl font-medium text-gb-gray-dark-900 outline-none sm:text-4xl";
     let finalClass: string = baseClass;
 
     if (this.errorToken()) {
@@ -54,7 +54,7 @@ export class GbOtpComponent implements AfterViewInit {
     }
 
     if (this.readValue() !== "") {
-      finalClass = finalClass.replace("bg-gb-gray-light-400", "bg-gb-gray-light-600");
+      finalClass = finalClass.replace("bg-white", "bg-gb-gray-light-600");
     }
 
     return finalClass;
