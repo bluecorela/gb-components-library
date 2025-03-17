@@ -21,7 +21,8 @@
       [name]="isShowingPassword() ? 'eye-off-outline' : 'eye-outline'"
       class="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer"
       color="medium"
-      (click)="togglePass()" />
+      (click)="togglePass()"
+      data-test="password-gb-icon" />
   }
 </div>
 @if (regex() || typeof min() !== 'undefined' || typeof max() !== 'undefined') {
