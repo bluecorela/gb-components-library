@@ -10,7 +10,6 @@ import {
   input,
   output,
 } from "@angular/core";
-import { TranslateService } from "@ngx-translate/core";
 import { REGEX } from "../../constants/regex";
 
 // ##### TYPES
@@ -30,7 +29,6 @@ type KeyboardEventsEnum = (typeof KeyboardEventsEnum)[keyof typeof KeyboardEvent
   styleUrl: "./gb-otp.component.scss",
 })
 export class GbOtpComponent implements AfterViewInit {
-  public translate = inject(TranslateService);
 
   @ViewChildren("otpInput") otpInputs!: QueryList<ElementRef>;
 
