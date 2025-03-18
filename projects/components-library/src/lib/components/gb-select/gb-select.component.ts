@@ -8,6 +8,7 @@ import {
   effect,
   HostListener,
   ElementRef,
+  ViewChild,
   inject,
 } from '@angular/core';
 import { IonIcon } from '@ionic/angular/standalone';
@@ -28,13 +29,19 @@ export class GbSelectComponent {
     });
   }
 
+  // ##### INJECTS
   elRef = inject(ElementRef);
+
   @HostListener('document:click', ['$event'])
   onClickOutside(event: Event) {
     if (!this.elRef.nativeElement.contains(event.target)) {
       this.isDropdownOpen.update(() => false);
     }
   }
+
+  // ##### VIEWCHILDS
+  @ViewChild('dropdownMenu', { static: false }) dropdownMenu!: ElementRef;
+  @ViewChild('dropdownTrigger', { static: false }) dropdownTrigger!: ElementRef;
 
   // ##### INPUTS
   value = input.required<string>();
@@ -57,9 +64,13 @@ export class GbSelectComponent {
 
   // ##### METHODS
   async openSelect() {
-    if (this.disabled()) return;
-    this.isDropdownOpen.update(() => !this.isDropdownOpen());
-    this.wasFocused();
+    this.adjustDropdownPosition()
+    setTimeout(() => {
+      if (this.disabled()) return;
+      this.isDropdownOpen.update(() => !this.isDropdownOpen());
+      this.wasFocused();
+    }, 100)
+    
   }
 
   selectOption(option: string) {
@@ -69,6 +80,16 @@ export class GbSelectComponent {
 
   wasFocused() {
     this.focused.update(() => true);
+  }
+
+  adjustDropdownPosition() {
+    if (!this.dropdownMenu || !this.dropdownTrigger) return;
+    const triggerEl = this.dropdownTrigger.nativeElement;
+    const triggerRect = triggerEl.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+    const spaceBelow = windowHeight - triggerRect.bottom;
+    if (spaceBelow < 150) this.dropdownMenu.nativeElement.style.top = '-167px'
+    else this.dropdownMenu.nativeElement.style.top = '46px'
   }
 
   // ##### COMPUTED
@@ -88,11 +109,10 @@ export class GbSelectComponent {
     else classes += ' pl-4';
     if (this.disabled()) classes += ' cursor-not-allowed bg-gray-2';
     else classes += ' cursor-pointer bg-transparent';
-    // if (this.required() && this.focused()) {
-    //   if (!this.selected())
-    //     classes += ' focus:border-gb-error-500 border-gb-error-500';
-    //   else classes += ' focus:border-gb-success-500 border-gb-success-500';
-    // }
+    if (this.required() && this.focused()) {
+      if (!this.selected())
+        classes += ' focus:border-gb-error-500 border-gb-error-500';
+    }
     if (!this.selected()) classes += ' text-dark-6';
     return classes;
   });
