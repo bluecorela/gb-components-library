@@ -13,7 +13,7 @@ export class GbStepperComponent {
   // ##### METHODS
   stepClass(index: number) {
     let classes =
-      'relative z-10 mx-auto mb-[10px] flex h-9 w-9 items-center justify-center rounded-full border-2 text-base font-medium sm:h-[50px] sm:w-[50px] sm:text-xl';
+      "relative z-10 mx-auto flex h-9 w-9 items-center justify-center rounded-full border-2 text-base font-medium sm:h-[50px] sm:w-[50px] sm:text-xl";
     if (index < this.current())
       classes += ' bg-gb-pink-500 border-gb-pink-500 text-white';
     else classes += ' border-stroke bg-white text-gb-text-primary';
