@@ -101,8 +101,10 @@ export class GbInputComponent implements OnInit {
     return true;
   }
 
-  validateRegex(rgx: RegExp[]) {
-    for (let rx of rgx) if (!rx.test(`${this.model()}`)) return false;
+  validateRegex(rgx: RegExp | RegExp[], index?: number) {
+    let r = Array.isArray(rgx) ? rgx : [rgx];
+    if (index) r = [r[index]];
+    for (let rx of r) if (!rx.test(`${this.model()}`)) return false;
     return true;
   }
 

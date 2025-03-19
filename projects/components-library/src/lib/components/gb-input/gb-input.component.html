@@ -1,4 +1,7 @@
-<label class="mb-[10px] block text-base font-medium text-dark" [attr.data-test]="identity() + '-gb-label'">
+<label
+  class="text-dark mb-[10px] block text-base font-medium"
+  [attr.data-test]="identity() + '-gb-label'"
+>
   {{ label() }}
 </label>
 <div class="relative">
@@ -11,44 +14,54 @@
     (focusin)="wasFocused()"
     [disabled]="disabled()"
     [id]="identity()"
-    [attr.data-test]="identity() + '-gb-input'" />
+    [attr.data-test]="identity() + '-gb-input'"
+  />
   <ion-icon
     [name]="icon()"
-    class="absolute top-1/2 left-4 -translate-y-1/2"
-    color="medium" />
+    class="absolute left-4 top-1/2 -translate-y-1/2"
+    color="medium"
+  />
   @if (type() == 'password' && passwordToggle()) {
     <ion-icon
       [name]="isShowingPassword() ? 'eye-off-outline' : 'eye-outline'"
-      class="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer"
+      class="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
       color="medium"
       (click)="togglePass()"
-      data-test="password-gb-icon" />
+      data-test="password-gb-icon"
+    />
   }
 </div>
 @if (regex() || typeof min() !== 'undefined' || typeof max() !== 'undefined') {
   @if (okHint() && model() && isValid()) {
-    <p class="mt-[5px] text-sm text-gb-success-500">{{ okHint() }}</p>
+    <p class="text-gb-success-500 mt-[5px] text-sm">{{ okHint() }}</p>
   }
   @if (errHint() && model() && !isValid()) {
-    <p class="mt-[5px] text-sm text-gb-error-500">{{ errHint() }}</p>
+    <p class="text-gb-error-500 mt-[5px] text-sm">{{ errHint() }}</p>
   }
 }
 
 @if (forceError().force()) {
-  <p class="mt-[5px] text-sm text-gb-error-500">{{ forceError().msg() }}</p>
+  <p class="text-gb-error-500 mt-[5px] text-sm">{{ forceError().msg() }}</p>
 }
 
 @if (regexMessages() && isFocus()) {
-  <ul class="gb-mt-md" [attr.data-test]="identity() + '-gb-regexMessages'">
+  <ul
+    class="gb-mt-md"
+    [attr.data-test]="identity() + '-gb-regexMessages'"
+  >
     @for (msg of regexMessages(); track msg; let idx = $index) {
       <li
         [class]="
-          validateRegex([regex()[idx]])
+          validateRegex(regex(), idx)
             ? 'text-gb-success-500 flex'
             : 'text-gb-gray-dark-500 flex'
-        ">
+        "
+      >
         <span class="mr-1">
-          <ion-icon name="checkmark-circle-outline" class="display-xs" />
+          <ion-icon
+            name="checkmark-circle-outline"
+            class="display-xs"
+          />
         </span>
         <span class="text-sm">{{ msg }}</span>
       </li>
