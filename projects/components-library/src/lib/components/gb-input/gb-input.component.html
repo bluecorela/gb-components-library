@@ -27,11 +27,15 @@
 </div>
 @if (regex() || typeof min() !== 'undefined' || typeof max() !== 'undefined') {
   @if (okHint() && model() && isValid()) {
-    <p class="mt-[10px] text-sm text-gb-success-500" [attr.data-test]="identity() + '-gb-okHint'">{{ okHint() }}</p>
+    <p class="mt-[5px] text-sm text-gb-success-500">{{ okHint() }}</p>
   }
   @if (errHint() && model() && !isValid()) {
-    <p class="mt-[10px] text-sm text-gb-error-500" [attr.data-test]="identity() + '-gb-errHint'">{{ errHint() }}</p>
+    <p class="mt-[5px] text-sm text-gb-error-500">{{ errHint() }}</p>
   }
+}
+
+@if (forceError().force()) {
+  <p class="mt-[5px] text-sm text-gb-error-500">{{ forceError().msg() }}</p>
 }
 
 @if (regexMessages() && isFocus()) {
