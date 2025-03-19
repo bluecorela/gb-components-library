@@ -1,22 +1,14 @@
 // ##### IONIC & ANGULAR
-import {
-  Component,
-  input,
-  output,
-  signal,
-  OnInit,
-  effect,
-  computed,
-} from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { IonIcon } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import * as icons from 'ionicons/icons';
+import { Component, input, output, signal, OnInit, effect, computed } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { IonIcon } from "@ionic/angular/standalone";
+import { addIcons } from "ionicons";
+import * as icons from "ionicons/icons";
 
 @Component({
-  selector: 'gb-input',
-  templateUrl: './gb-input.component.html',
-  styleUrls: ['./gb-input.component.scss'],
+  selector: "gb-input",
+  templateUrl: "./gb-input.component.html",
+  styleUrls: ["./gb-input.component.scss"],
   imports: [FormsModule, IonIcon],
 })
 export class GbInputComponent implements OnInit {
@@ -24,7 +16,7 @@ export class GbInputComponent implements OnInit {
     addIcons(icons);
     // ##### EFFECTS
     effect(() => {
-      if (this.value() !== '' && !this.valueLoaded()) {
+      if (this.value() !== "" && !this.valueLoaded()) {
         this.model.update(() => this.value());
         this.valueLoaded.update(() => true);
       }
@@ -32,47 +24,47 @@ export class GbInputComponent implements OnInit {
     });
   }
   // ##### INPUTS
-  type = input<'text' | 'password' | 'email' | 'number'>('text');
-  label = input('');
-  errHint = input('');
-  okHint = input('');
-  placeholder = input('');
+  type = input<"text" | "password" | "email" | "number">("text");
+  label = input("");
+  errHint = input("");
+  okHint = input("");
+  placeholder = input("");
   value = input.required<string>();
-  color = input('blue');
+  color = input("blue");
   level = input(500);
   icon = input<string>();
   disabled = input(false);
-  extraClasses = input('');
+  extraClasses = input("");
   passwordToggle = input(false);
-  regex = input<string | string[]>('');
+  regex = input<RegExp | RegExp[]>(new RegExp(""));
   required = input(false);
   min = input<number>();
   max = input<number>();
-  identity = input('');
+  identity = input("");
   regexMessages = input<string[]>();
   forceError = input({
     force: signal(false),
-    msg: signal(''),
+    msg: signal(""),
   });
 
   // ##### SIGNALS
-  model = signal<string>('');
+  model = signal<string>("");
   isShowingPassword = signal(false);
-  inType = signal('');
+  inType = signal("");
   focused = signal(false);
   isFocus = signal(false);
   valueLoaded = signal(false);
 
   // ##### METHODS
   togglePass() {
-    this.isShowingPassword.update(val => (val = !val));
-    if (this.isShowingPassword()) this.inType.update(() => 'text');
-    else this.inType.update(() => 'password');
+    this.isShowingPassword.update((val) => (val = !val));
+    if (this.isShowingPassword()) this.inType.update(() => "text");
+    else this.inType.update(() => "password");
   }
 
   wasFocused() {
     this.focused.update(() => true);
-    this.isFocus.update(val => (val = !val));
+    this.isFocus.update((val) => (val = !val));
   }
 
   // OUTPUTS
@@ -87,15 +79,13 @@ export class GbInputComponent implements OnInit {
     else classes += ` pl-3`;
     classes += ` focus:border-gb-${color}-${level}`;
     if ((this.regex() || this.min() || this.max()) && this.model()) {
-      if (!this.isValid())
-        classes += ' focus:border-gb-error-500 border-gb-error-500';
+      if (!this.isValid()) classes += " focus:border-gb-error-500 border-gb-error-500";
     }
     if (this.required() && !this.model() && this.focused()) {
-      classes += ' focus:border-gb-error-500 border-gb-error-500';
+      classes += " focus:border-gb-error-500 border-gb-error-500";
     }
-    if (this.disabled()) classes += ' bg-gray-2';
-    if (this.forceError().force())
-      classes += ' border-gb-error-500 border-gb-error-500';
+    if (this.disabled()) classes += " bg-gray-2";
+    if (this.forceError().force()) classes += " border-gb-error-500 border-gb-error-500";
     classes += ` ${this.extraClasses()}`;
     return classes;
   });
@@ -111,11 +101,8 @@ export class GbInputComponent implements OnInit {
     return true;
   }
 
-  validateRegex(rgx: string[]) {
-    for (let rx of rgx) {
-      const reg = new RegExp(rx);
-      if (!reg.test(`${this.model()}`)) return false;
-    }
+  validateRegex(rgx: RegExp[]) {
+    for (let rx of rgx) if (!rx.test(`${this.model()}`)) return false;
     return true;
   }
 
