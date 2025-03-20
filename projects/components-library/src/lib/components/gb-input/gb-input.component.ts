@@ -91,13 +91,13 @@ export class GbInputComponent implements OnInit {
   });
 
   isValid() {
-    const regex = this.regex();
-    const regexArray = Array.isArray(regex) ? regex : [regex];
     const min = this.min();
     const max = this.max();
-    if (regex) return this.validateRegex(regexArray);
     if (min != undefined && parseFloat(this.model()) < min) return false;
     if (max != undefined && parseFloat(this.model()) > max) return false;
+    const regex = this.regex();
+    const regexArray = Array.isArray(regex) ? regex : [regex];
+    if (regex) return this.validateRegex(regexArray);
     return true;
   }
 
