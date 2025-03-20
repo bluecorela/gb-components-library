@@ -51,10 +51,6 @@ export class GbOtpComponent implements AfterViewInit {
       finalClass = finalClass.replace("border-stroke", "border-gb-error-500");
     }
 
-    if (this.readValue() !== "") {
-      finalClass = finalClass.replace("bg-white", "bg-gb-gray-light-600");
-    }
-
     return finalClass;
   });
 
