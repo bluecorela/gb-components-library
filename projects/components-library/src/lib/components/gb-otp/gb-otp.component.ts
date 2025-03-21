@@ -6,7 +6,6 @@ import {
   ViewChildren,
   computed,
   effect,
-  inject,
   input,
   output,
 } from "@angular/core";
@@ -167,6 +166,7 @@ export class GbOtpComponent implements AfterViewInit {
   }
 
   private clearAllInputs(): void {
+    if (!this.otpInputs || this.otpInputs.length === 0) return;
     const inputsArray = this.otpInputs.toArray().map((el) => el.nativeElement);
     inputsArray.forEach((input) => {
       input.value = "";

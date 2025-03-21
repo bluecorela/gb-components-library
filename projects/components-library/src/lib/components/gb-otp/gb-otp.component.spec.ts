@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { Component } from "@angular/core";
+import { Component, ElementRef, QueryList } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { GbOtpComponent } from "./gb-otp.component";
 import { TranslateModule } from "@ngx-translate/core";
@@ -259,5 +259,16 @@ describe("GbOtpComponent", () => {
       expect(focusSpy).toHaveBeenCalled();
       done();
     });
+  });
+
+  it("should safely exit clearAllInputs when otpInputs is undefined or empty", () => {
+    const otpComponent = fixture.debugElement.children[0].componentInstance as GbOtpComponent;
+
+    (otpComponent as any).otpInputs = undefined as any;
+
+    expect(() => (otpComponent as any).clearAllInputs()).not.toThrow();
+
+    (otpComponent as any).otpInputs = new QueryList<ElementRef>();
+    expect(() => (otpComponent as any).clearAllInputs()).not.toThrow();
   });
 });
