@@ -111,6 +111,7 @@ export class Utils {
     type = "default",
     header,
     icon,
+    id,
     duration = 5000,
     position = "top",
     color,
@@ -118,6 +119,7 @@ export class Utils {
     text: string;
     type?: "default" | "success" | "warning" | "error";
     header?: string;
+    id?: string;
     icon?: string;
     duration?: number;
     position?: "top" | "bottom";
@@ -138,6 +140,7 @@ export class Utils {
       message: text,
       duration,
       position,
+      id: `${id}-gb-toast`,
       color: `gb-${col}-25`,
       mode: "ios",
       cssClass: [`text-gb-${col}-600`, `gb-toast-gb-${col}-500`, "w500"],
