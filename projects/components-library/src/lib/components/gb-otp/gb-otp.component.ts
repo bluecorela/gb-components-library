@@ -29,7 +29,6 @@ type KeyboardEventsEnum = (typeof KeyboardEventsEnum)[keyof typeof KeyboardEvent
   styleUrl: "./gb-otp.component.scss",
 })
 export class GbOtpComponent implements AfterViewInit {
-
   @ViewChildren("otpInput") otpInputs!: QueryList<ElementRef>;
 
   // #####INPUTS
@@ -59,6 +58,9 @@ export class GbOtpComponent implements AfterViewInit {
     effect(() => {
       this.readValue();
       this.setInputValues();
+      if (this.errorToken()) {
+        this.clearAllInputs();
+      }
     });
   }
 
@@ -162,5 +164,14 @@ export class GbOtpComponent implements AfterViewInit {
       .toArray()
       .map((el) => el.nativeElement.value)
       .join("");
+  }
+
+  private clearAllInputs(): void {
+    const inputsArray = this.otpInputs.toArray().map((el) => el.nativeElement);
+    inputsArray.forEach((input) => {
+      input.value = "";
+      input.disabled = false;
+    });
+    this.emitOtpValue();
   }
 }
