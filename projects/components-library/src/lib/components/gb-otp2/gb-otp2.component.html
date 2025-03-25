@@ -1,0 +1,24 @@
+<div class="flex gap-2">
+  @for (val of otpVals(); track val; let idx = $index) {
+    <input
+      type="text"
+      inputmode="numeric"
+      maxlength="1"
+      class="shadow-xs gb-w-100 border-stroke flex items-center justify-center rounded-lg border bg-white p-2 text-center text-2xl font-medium text-black outline-none sm:text-4xl"
+      style="max-width: 58px"
+      #otpInput
+      (input)="focusInput(idx, $event)"
+      (paste)="handlePaste($event)"
+      [(ngModel)]="otpVals()[idx]"
+      [readonly]="readonly()"
+    />
+  }
+</div>
+@if (hint() && !errHint()) {
+  <p class="text-body-color mt-1.5 text-sm">
+    {{ hint() }}
+  </p>
+}
+@if (errHint()) {
+  <p class="text-gb-error-500 mt-1.5 text-sm">{{ errHint() }}</p>
+}
