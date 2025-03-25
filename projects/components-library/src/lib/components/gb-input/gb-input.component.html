@@ -51,7 +51,8 @@
 }
 
 @if (forceError().force()) {
-  <p class="text-gb-error-500 mt-[5px] text-sm">{{ forceError().msg() }}</p>
+  <p [attr.data-test]="identity() + '-gb-force-error-label'" class="text-gb-error-500 mt-[5px] text-sm">{{
+    forceError().msg() }}</p>
 }
 
 @if (regexMessages() && isFocus()) {
