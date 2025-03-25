@@ -8,8 +8,10 @@
     <input
       #otpInput
       type="text"
+      inputmode="numeric"
       [class]="inputClasses()"
       maxlength="1"
+      [readonly]="readonly()"
     />
   }
 </div>

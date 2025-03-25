@@ -8,6 +8,7 @@ import {
   effect,
   input,
   output,
+  signal,
 } from "@angular/core";
 import { REGEX } from "../../constants/regex";
 
@@ -35,6 +36,7 @@ export class GbOtpComponent implements AfterViewInit {
   label = input<string>("");
   errorToken = input<boolean>(false);
   errorHint = input("");
+  readonly = signal(false);
 
   // ##### OUTPUTS
   valueChange = output<string>();
@@ -92,12 +94,13 @@ export class GbOtpComponent implements AfterViewInit {
       return;
     }
 
+    this.readonly.update(() => true);
+
     const inputsArray = this.otpInputs.toArray().map((el) => el.nativeElement);
     const otpArray = this.readValue().split("");
 
     inputsArray.forEach((input, index) => {
       input.value = otpArray[index] || "";
-      input.disabled = true;
     });
 
     this.emitOtpValue();
