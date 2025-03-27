@@ -16,7 +16,7 @@
   }
 </div>
 @if (errorToken() && errorHint() !== "") {
-  <p class="text-gb-error-500 gb-mt-md text-sm">
+  <p class="text-gb-error-500 gb-mt-md text-sm" data-test="otp-error-gb-label">
     {{ errorHint() }}
   </p>
 }
