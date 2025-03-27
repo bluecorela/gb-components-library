@@ -1,7 +1,6 @@
 // ##### IONIC & ANGULAR
 import { Injectable, inject, signal } from "@angular/core";
-import { ModalController } from "@ionic/angular/standalone";
-import { ToastController } from "@ionic/angular/standalone";
+import { ModalController, ToastController, LoadingController, LoadingOptions } from "@ionic/angular/standalone";
 import { addIcons } from "ionicons";
 import * as icons from "ionicons/icons";
 
@@ -21,10 +20,12 @@ export class Utils {
 
   // ##### SIGNALS
   activeToast = signal<HTMLIonToastElement | null>(null);
+  activeLoader = signal<HTMLIonLoadingElement | null>(null);
 
   // ##### INJECTS
   modalCtrl = inject(ModalController);
   toastCtrl = inject(ToastController);
+  ldngCtrl = inject(LoadingController);
 
   // ##### METHODS
   public async openModal({
@@ -153,6 +154,16 @@ export class Utils {
     this.activeToast()?.dismiss();
     this.activeToast.update(() => toast);
     await toast.present();
+  }
+
+  public async openLoader(opts?: LoadingOptions) {
+    this.activeLoader.set(await this.ldngCtrl.create(opts));
+    this.activeLoader()?.present();
+  }
+
+  public dismissLoader() {
+    this.activeLoader()?.dismiss();
+    this.activeLoader.set(null);
   }
 
   public cleanStringForRegex(stringVal: string) {
