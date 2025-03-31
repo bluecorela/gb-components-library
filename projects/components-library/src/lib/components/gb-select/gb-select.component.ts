@@ -64,7 +64,7 @@ export class GbSelectComponent {
 
   // ##### METHODS
   async openSelect() {
-    this.adjustDropdownPosition();
+    // this.adjustDropdownPosition();
     setTimeout(() => {
       if (this.disabled()) return;
       this.isDropdownOpen.update(() => !this.isDropdownOpen());
