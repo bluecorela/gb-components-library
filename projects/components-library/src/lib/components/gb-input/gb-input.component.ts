@@ -1,5 +1,17 @@
 // ##### IONIC & ANGULAR
-import { Component, input, output, signal, OnInit, effect, computed } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  ViewChild,
+  inject,
+  input,
+  output,
+  signal,
+  OnInit,
+  effect,
+  computed,
+} from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { IonIcon } from "@ionic/angular/standalone";
 import { addIcons } from "ionicons";
@@ -23,6 +35,20 @@ export class GbInputComponent implements OnInit {
       this.valueChange.emit(this.model());
     });
   }
+
+  // ##### VIEW CHILDS
+  @ViewChild("gbInput") inputElement!: ElementRef<HTMLInputElement>;
+
+  // ##### INJECTS
+  elRef = inject(ElementRef);
+
+  @HostListener("document:click", ["$event"])
+  onClickOutside(event: Event) {
+    if (!this.elRef.nativeElement.contains(event.target)) {
+      this.inputElement.nativeElement.blur();
+    }
+  }
+
   // ##### INPUTS
   type = input<"text" | "password" | "email" | "number">("text");
   label = input("");

@@ -1,16 +1,5 @@
 // ##### IONIC & ANGULAR
-import {
-  Component,
-  signal,
-  input,
-  computed,
-  output,
-  effect,
-  HostListener,
-  ElementRef,
-  ViewChild,
-  inject,
-} from "@angular/core";
+import { Component, signal, input, computed, output, effect, HostListener, ElementRef, inject } from "@angular/core";
 import { IonIcon } from "@ionic/angular/standalone";
 import { addIcons } from "ionicons";
 import * as icons from "ionicons/icons";
@@ -39,10 +28,6 @@ export class GbSelectComponent {
     }
   }
 
-  // ##### VIEWCHILDS
-  @ViewChild("dropdownMenu", { static: false }) dropdownMenu!: ElementRef;
-  @ViewChild("dropdownTrigger", { static: false }) dropdownTrigger!: ElementRef;
-
   // ##### INPUTS
   value = input.required<string>();
   options = input<{ label: string; value: string }[]>([]);
@@ -64,7 +49,6 @@ export class GbSelectComponent {
 
   // ##### METHODS
   async openSelect() {
-    // this.adjustDropdownPosition();
     setTimeout(() => {
       if (this.disabled()) return;
       this.isDropdownOpen.update(() => !this.isDropdownOpen());
@@ -79,20 +63,6 @@ export class GbSelectComponent {
 
   wasFocused() {
     this.focused.update(() => true);
-  }
-
-  adjustDropdownPosition() {
-    if (!this.dropdownMenu || !this.dropdownTrigger) return;
-    const triggerEl = this.dropdownTrigger.nativeElement;
-    const triggerRect = triggerEl.getBoundingClientRect();
-    const windowHeight = window.innerHeight;
-    const spaceBelow = windowHeight - triggerRect.bottom;
-    let top = "-116px";
-    const height = this.dropdownMenu.nativeElement.offsetHeight;
-    if (height < 150 && height >= 140) top = "-156px";
-    if (height >= 150) top = "-167px";
-    if (spaceBelow < 150) this.dropdownMenu.nativeElement.style.top = top;
-    else this.dropdownMenu.nativeElement.style.top = "46px";
   }
 
   // ##### COMPUTED

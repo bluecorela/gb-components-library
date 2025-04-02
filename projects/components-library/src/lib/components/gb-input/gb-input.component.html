@@ -15,6 +15,7 @@
     [disabled]="disabled()"
     [id]="identity()"
     [attr.data-test]="identity() + '-gb-input'"
+    #gbInput
   />
   <ion-icon
     [name]="icon()"
@@ -51,8 +52,13 @@
 }
 
 @if (forceError().force()) {
-  <p [attr.data-test]="identity() + '-gb-force-error-label'" class="text-gb-error-500 mt-[5px] text-sm">{{
-    forceError().msg() }}</p>
+  <p
+    [attr.data-test]="identity() + '-gb-force-error-label'"
+    class="text-gb-error-500 mt-[5px] text-sm"
+  >
+    {{
+    forceError().msg() }}
+  </p>
 }
 
 @if (regexMessages() && isFocus()) {
