@@ -28,6 +28,7 @@ export class GbBtnComponent {
     | 'lime'
     | 'gray-dark'
     | 'stroke'
+    | 'white'
   >('blue');
   fill = input<'solid' | 'outline'>('solid');
   icon = input<string>();
