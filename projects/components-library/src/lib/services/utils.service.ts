@@ -144,7 +144,7 @@ export class Utils {
       id: `${id}-gb-toast`,
       color: `gb-white-500`,
       mode: "ios",
-      cssClass: [`gb-text-primary`, `gb-toast-gb-${col}-500`, "w500"],
+      cssClass: [`text-gb-text-primary`, `gb-toast-gb-${col}-500`, "w500"],
       swipeGesture: "vertical",
       icon: icn,
       header,
