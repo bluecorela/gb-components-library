@@ -32,10 +32,14 @@ export class Utils {
     props,
     mode = "dialog",
     comp = GbGenericModalComponent,
+    enterAnimation,
+    leaveAnimation,
   }: {
     props?: object;
     mode?: "dialog" | "fullscreen" | "card";
     comp?: any;
+    enterAnimation?: ((baseEl: HTMLElement) => any) | null;
+    leaveAnimation?: ((baseEl: HTMLElement) => any) | null;
   }): Promise<string | null> {
     let id = "";
     const modalObj: any = {
@@ -53,7 +57,16 @@ export class Utils {
       modalObj.mode = "ios";
     }
     modalObj.id = id;
-    const modal = await this.modalCtrl.create(modalObj);
+    let modal = await this.modalCtrl.create(modalObj);
+
+    if (enterAnimation != null) {
+      modal.enterAnimation = enterAnimation;
+    }
+
+    if (leaveAnimation != null) {
+      modal.leaveAnimation = leaveAnimation;
+    }
+
     modal.present();
     const { data } = await modal.onWillDismiss();
     if (data) return data.action;
