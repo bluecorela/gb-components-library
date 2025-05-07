@@ -1,6 +1,12 @@
 // ##### IONIC & ANGULAR
 import { Injectable, inject, signal } from "@angular/core";
-import { ModalController, ToastController, LoadingController, LoadingOptions } from "@ionic/angular/standalone";
+import {
+  ModalController,
+  ToastController,
+  LoadingController,
+  LoadingOptions,
+  AlertController,
+} from "@ionic/angular/standalone";
 import { addIcons } from "ionicons";
 import * as icons from "ionicons/icons";
 
@@ -24,6 +30,7 @@ export class Utils {
 
   // ##### INJECTS
   modalCtrl = inject(ModalController);
+  alertCtrl = inject(AlertController);
   toastCtrl = inject(ToastController);
   ldngCtrl = inject(LoadingController);
 
@@ -71,6 +78,39 @@ export class Utils {
     const { data } = await modal.onWillDismiss();
     if (data) return data.action;
     return null;
+  }
+
+  public async openAlert({
+    header,
+    subHeader,
+    message,
+    mode = "md",
+    buttons,
+    cssClass,
+  }: {
+    header?: string;
+    message?: string;
+    subHeader?: string;
+    mode?: "ios" | "md";
+    buttons?: Array<{
+      text: string;
+      role?: string;
+      cssClass?: string | string[];
+      handler?: () => void;
+    }>;
+    cssClass?: string;
+  }): Promise<void> {
+    const alertOptions = {
+      mode,
+      ...(cssClass && { cssClass }),
+      ...(header && { header }),
+      ...(subHeader && { subHeader }),
+      ...(message && { message }),
+      ...(buttons && { buttons }),
+    };
+
+    const alert = await this.alertCtrl.create(alertOptions);
+    await alert.present();
   }
 
   validateForm(formData: FormObject): boolean {
