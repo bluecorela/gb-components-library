@@ -30,7 +30,7 @@
     "karma-junit-reporter": "^2.0.1",
     "ngx-highlightjs": "^14.0.0",
     "rxjs": "~7.8.0",
-    "tailgrids": "^2.2.7",
+    "tailgrids": "^2.3.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },
