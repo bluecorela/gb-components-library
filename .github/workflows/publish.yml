@@ -1,139 +1,189 @@
-name: Publish Library to JFrog
+# name: Publish Library to JFrog
+
+# on:
+#   push:
+#     branches:
+#       - feature/*
+#       - development
+#       - qa
+#       - main
+#   workflow_dispatch: # Allows manual triggering
+
+# jobs:
+#   # ------------------------ DEPLOYS THE LIBRARY TO JFROG DEV ------------------------ #
+#   deploy-dev:
+#     runs-on: ubuntu-latest
+#     if: github.ref == 'refs/heads/development'
+#     steps:
+#       - name: Checkout Code
+#         uses: actions/checkout@v3
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: 22
+#       - name: Install Dependencies
+#         run: npm install
+#       - name: Build the Library
+#         run: npm run build-prod
+#       - name: Configure NPM for JFrog
+#         run: |
+#           echo "//trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/:_authToken=${{ secrets.JFROG_ACCESS_TOKEN }}" >> ~/.npmrc
+#           echo "registry=https://trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/" >> ~/.npmrc
+#           echo "always-auth=true" >> ~/.npmrc
+#           cat ~/.npmrc
+#       - name: Publish Package to JFrog | Dev
+#         run: |
+#           VERSION="1.0.${{github.run_number}}-dev"
+#           cd projects/components-library
+#           npm version $VERSION
+#           cd -
+#           echo "Publishing $VERSION to Dev..."
+#           npm run publish
+#         env:
+#           JFROG_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS_TOKEN }}
+
+#   # ----------------- DEPLOYS THE LIBRARY TO JFROG QA ------------------------ #
+#   deploy-qa:
+#     runs-on: ubuntu-latest
+#     if: github.ref == 'refs/heads/qa'
+#     steps:
+#       - name: Checkout Code
+#         uses: actions/checkout@v3
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: 22
+#       - name: Install Dependencies
+#         run: npm install
+#       - name: Build the Library
+#         run: npm run build-prod
+#       - name: Configure NPM for JFrog
+#         run: |
+#           echo "//trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/:_authToken=${{ secrets.JFROG_ACCESS_TOKEN }}" >> ~/.npmrc
+#           echo "registry=https://trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/" >> ~/.npmrc
+#           echo "always-auth=true" >> ~/.npmrc
+#           cat ~/.npmrc
+#       - name: Publish Package to JFrog | QA
+#         run: |
+#           VERSION="1.0.${{github.run_number}}-qa"
+#           cd projects/components-library
+#           npm version $VERSION
+#           cd -
+#           echo "Publishing $VERSION to QA..."
+#           npm run publish
+#         env:
+#           JFROG_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS_TOKEN }}
+
+# ----------------- DEPLOYS THE LIBRARY TO JFROG PROD ------------------------ #
+# deploy-prod:
+#   runs-on: ubuntu-latest
+#   if: github.ref == 'refs/heads/main'
+#   steps:
+#     - name: Checkout Code
+#       uses: actions/checkout@v3
+#     - name: Set up Node.js
+#       uses: actions/setup-node@v4
+#       with:
+#         node-version: 22
+#     - name: Install Dependencies
+#       run: npm install
+#     - name: Build the Library
+#       run: npm run build-prod
+#     - name: Configure NPM for JFrog
+#       run: |
+#         echo "//trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/:_authToken=${{ secrets.JFROG_ACCESS_TOKEN }}" >> ~/.npmrc
+#         echo "registry=https://trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/" >> ~/.npmrc
+#         echo "always-auth=true" >> ~/.npmrc
+#         cat ~/.npmrc
+#     - name: Publish Package to JFrog | Prod
+#       run: |
+#         VERSION="1.0.${{github.run_number}}-prod"
+#         cd projects/components-library
+#         npm version $VERSION
+#         cd -
+#         echo "Publishing $VERSION to Prod..."
+#         npm run publish
+#       env:
+#         JFROG_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS_TOKEN }}
+
+# # ----------------- DEPLOYS THE LIBRARY TO JFROG FEATURE ------------------------ #
+# deploy-feature:
+#   runs-on: ubuntu-latest
+#   if: startsWith(github.ref, 'refs/heads/feature/')
+#   steps:
+#     - name: Checkout Code
+#       uses: actions/checkout@v3
+#     - name: Set up Node.js
+#       uses: actions/setup-node@v4
+#       with:
+#         node-version: 22
+#     - name: Install Dependencies
+#       run: npm install
+#     - name: Build the Library
+#       run: npm run build-prod
+#     - name: Configure NPM for JFrog
+#       run: |
+#         echo "//trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/:_authToken=${{ secrets.JFROG_ACCESS_TOKEN }}" >> ~/.npmrc
+#         echo "registry=https://trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/" >> ~/.npmrc
+#         echo "always-auth=true" >> ~/.npmrc
+#         cat ~/.npmrc
+#     - name: Publish Package to JFrog | Feature
+#       run: |
+#         VERSION="1.0.${{github.run_number}}-feat"
+#         cd projects/components-library
+#         npm version $VERSION
+#         cd -
+#         echo "Publishing $VERSION to Feature..."
+#         npm run publish
+#       env:
+#         JFROG_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS_TOKEN }}
+
+name: Build & Release Angular Library
 
 on:
   push:
-    branches:
-      - feature/*
-      - development
-      - qa
-      - main
-  workflow_dispatch: # Allows manual triggering
+    tags:
+      - "v*.*.*" # Ej: v1.2.3
 
 jobs:
-  # ------------------------ DEPLOYS THE LIBRARY TO JFROG DEV ------------------------ #
-  deploy-dev:
+  release:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/development'
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - name: Install Dependencies
-        run: npm install
-      - name: Build the Library
-        run: npm run build-prod
-      - name: Configure NPM for JFrog
-        run: |
-          echo "//trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/:_authToken=${{ secrets.JFROG_ACCESS_TOKEN }}" >> ~/.npmrc
-          echo "registry=https://trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/" >> ~/.npmrc
-          echo "always-auth=true" >> ~/.npmrc
-          cat ~/.npmrc
-      - name: Publish Package to JFrog | Dev
-        run: |
-          VERSION="1.0.${{github.run_number}}-dev"
-          cd projects/components-library
-          npm version $VERSION
-          cd -
-          echo "Publishing $VERSION to Dev..."
-          npm run publish
-        env:
-          JFROG_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS_TOKEN }}
 
-  # ----------------- DEPLOYS THE LIBRARY TO JFROG QA ------------------------ #
-  deploy-qa:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/qa'
     steps:
-      - name: Checkout Code
+      - name: 🧾 Checkout repo
         uses: actions/checkout@v3
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - name: Install Dependencies
-        run: npm install
-      - name: Build the Library
-        run: npm run build-prod
-      - name: Configure NPM for JFrog
-        run: |
-          echo "//trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/:_authToken=${{ secrets.JFROG_ACCESS_TOKEN }}" >> ~/.npmrc
-          echo "registry=https://trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/" >> ~/.npmrc
-          echo "always-auth=true" >> ~/.npmrc
-          cat ~/.npmrc
-      - name: Publish Package to JFrog | QA
-        run: |
-          VERSION="1.0.${{github.run_number}}-qa"
-          cd projects/components-library
-          npm version $VERSION
-          cd -
-          echo "Publishing $VERSION to QA..."
-          npm run publish
-        env:
-          JFROG_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS_TOKEN }}
 
-  # ----------------- DEPLOYS THE LIBRARY TO JFROG PROD ------------------------ #
-  deploy-prod:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: 22
-      - name: Install Dependencies
-        run: npm install
-      - name: Build the Library
-        run: npm run build-prod
-      - name: Configure NPM for JFrog
-        run: |
-          echo "//trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/:_authToken=${{ secrets.JFROG_ACCESS_TOKEN }}" >> ~/.npmrc
-          echo "registry=https://trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/" >> ~/.npmrc
-          echo "always-auth=true" >> ~/.npmrc
-          cat ~/.npmrc
-      - name: Publish Package to JFrog | Prod
-        run: |
-          VERSION="1.0.${{github.run_number}}-prod"
-          cd projects/components-library
-          npm version $VERSION
-          cd -
-          echo "Publishing $VERSION to Prod..."
-          npm run publish
-        env:
-          JFROG_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS_TOKEN }}
+          node-version: 18
 
-  # ----------------- DEPLOYS THE LIBRARY TO JFROG FEATURE ------------------------ #
-  deploy-feature:
-    runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/heads/feature/')
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - name: Install Dependencies
+      - name: 📦 Install dependencies
         run: npm install
-      - name: Build the Library
-        run: npm run build-prod
-      - name: Configure NPM for JFrog
+
+      - name: 🛠️ Build Angular library
+        run: npm run build
+
+      - name: 🏷️ Extract version from tag
+        id: get_version
         run: |
-          echo "//trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/:_authToken=${{ secrets.JFROG_ACCESS_TOKEN }}" >> ~/.npmrc
-          echo "registry=https://trial4g26zg.jfrog.io/artifactory/api/npm/components-library-npm/" >> ~/.npmrc
-          echo "always-auth=true" >> ~/.npmrc
-          cat ~/.npmrc
-      - name: Publish Package to JFrog | Feature
+          VERSION="${GITHUB_REF#refs/tags/v}"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: ✏️ Update version in package.json
         run: |
-          VERSION="1.0.${{github.run_number}}-feat"
-          cd projects/components-library
-          npm version $VERSION
-          cd -
-          echo "Publishing $VERSION to Feature..."
-          npm run publish
+          FILE=dist/components-library/package.json
+          VERSION="${{ steps.get_version.outputs.version }}"
+          jq ".version = \"$VERSION\"" $FILE > tmp.$$.json && mv tmp.$$.json $FILE
+        shell: bash
+
+      - name: 🧃 Pack library as .tgz
+        working-directory: dist/components-library
+        run: npm pack
+
+      - name: 🗂️ Create GitHub release and upload .tgz
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/components-library/*.tgz
         env:
-          JFROG_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

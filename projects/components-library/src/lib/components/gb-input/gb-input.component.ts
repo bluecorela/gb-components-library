@@ -110,7 +110,10 @@ export class GbInputComponent implements OnInit {
     if (this.required() && !this.model() && this.focused()) {
       classes += " focus:border-gb-error-500 border-gb-error-500";
     }
-    if (this.disabled()) classes += " bg-gray-2";
+    if (this.disabled()) {
+      classes = classes.replace("bg-white", "bg-gb-gray-light-500");
+      classes += " text-gb-gray-dark-500";
+    }
     if (this.forceError().force()) classes += " border-gb-error-500 border-gb-error-500";
     classes += ` ${this.extraClasses()}`;
     return classes;

@@ -2,18 +2,41 @@
   [class]="classes()"
   [disabled]="disabled()"
   [id]="identity()"
-  [attr.data-test]="identity() + '-gb-btn'">
+  [attr.data-test]="identity() + '-gb-btn'"
+>
   @if (spinner() && spinnerPosition() == 'left') {
-    <ion-spinner [name]="spinner()" [color]="color()"></ion-spinner>
+    <ion-spinner
+      [name]="spinner()"
+      [color]="color()"
+    ></ion-spinner>
   }
   @if (icon() && iconPosition() == 'left') {
     <ion-icon [name]="icon()"></ion-icon>
+  }
+  @if (iconCustom() && iconPosition() == 'left') {
+    <gb-icon
+      class="mr-2 flex items-center justify-center"
+      [fromSrc]="true"
+      [size]="sizeCustom()"
+      [icon]="iconCustom() || ''"
+    ></gb-icon>
   }
   {{ label() }}
   @if (icon() && iconPosition() == 'right') {
     <ion-icon [name]="icon()"></ion-icon>
   }
+  @if (iconCustom() && iconPosition() == 'right') {
+    <gb-icon
+      class="ml-2 flex items-center justify-center"
+      [fromSrc]="true"
+      [size]="sizeCustom()"
+      [icon]="iconCustom() || ''"
+    ></gb-icon>
+  }
   @if (spinner() && spinnerPosition() == 'right') {
-    <ion-spinner [name]="spinner()" [color]="color()"></ion-spinner>
+    <ion-spinner
+      [name]="spinner()"
+      [color]="color()"
+    ></ion-spinner>
   }
 </button>
