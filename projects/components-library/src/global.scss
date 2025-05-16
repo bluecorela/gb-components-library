@@ -70,7 +70,7 @@ ion-toast::part(button) {
 }
 
 // @import 'bootstrap/dist/css/bootstrap.min.css';
-@import "tailgrids/assets/css/tailwind.css";
+@import "./theme/tailwind.css";
 
 .form-check-input {
   height: 34px !important;
