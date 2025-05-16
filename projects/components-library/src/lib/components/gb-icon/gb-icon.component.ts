@@ -14,6 +14,7 @@ export class GbIconComponent implements OnInit {
   icon = input.required<string>();
   color = input<string>();
   size = input<string>();
+  extraClass = input<string>();
   from = input<"font" | "file" | "src" | "ionic">("font");
 
   // ##### SIGNALS
@@ -21,7 +22,9 @@ export class GbIconComponent implements OnInit {
 
   // ##### COMPUTED
   iconPath = computed(() => `assets/icon/${this.icon()}.svg`);
-  fontIconClass = computed(() => `icon icon-${this.icon()} text-${this.color()}`);
+  fontIconClass = computed(
+    () => `icon icon-${this.icon()} text-${this.color()} ${this.extraClass() ? this.extraClass() : ``}`,
+  );
 
   // ##### LC HOOKS
   async ngOnInit(): Promise<void> {
