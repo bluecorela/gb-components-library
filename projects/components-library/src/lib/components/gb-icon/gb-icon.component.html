@@ -1,10 +1,21 @@
-@if (iconLoaded() && !fromSrc()) {
+@if ((iconLoaded() && from() == 'file') || from() == 'ionic') {
   <ion-icon
     [name]="icon()"
     [color]="color()"
     [style.font-size]="size()"
-    [class]="size()" />
+    [class]="size()"
+  />
 }
-@if (fromSrc()) {
-  <ion-icon [src]="iconPath()" [style.font-size]="size()" [class]="size()" />
+@if (from() == 'src') {
+  <ion-icon
+    [src]="iconPath()"
+    [style.font-size]="size()"
+    [class]="size()"
+  />
+}
+@if (from() == 'font') {
+  <i
+    [class]="fontIconClass()"
+    [style.font-size]="size()"
+  ></i>
 }

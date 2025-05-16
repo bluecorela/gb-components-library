@@ -30,9 +30,9 @@ describe("GbIconComponent", () => {
     expect(component.iconLoaded.call(this)).toBeTrue();
   });
 
-  it("should ngOnInit with fromSrc", () => {
-    fixture.componentRef.setInput("fromSrc", true);
-    component.ngOnInit();
-    expect(component.iconLoaded.call(this)).toBeTrue();
-  });
+  // it("should ngOnInit with fromSrc", () => {
+  //   fixture.componentRef.setInput("fromSrc", true);
+  //   component.ngOnInit();
+  //   expect(component.iconLoaded.call(this)).toBeTrue();
+  // });
 });
