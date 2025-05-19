@@ -16,12 +16,13 @@ import { FormsModule } from "@angular/forms";
 import { IonIcon } from "@ionic/angular/standalone";
 import { addIcons } from "ionicons";
 import * as icons from "ionicons/icons";
+import { GbIconComponent } from "../gb-icon/gb-icon.component";
 
 @Component({
   selector: "gb-input",
   templateUrl: "./gb-input.component.html",
   styleUrls: ["./gb-input.component.scss"],
-  imports: [FormsModule, IonIcon],
+  imports: [FormsModule, IonIcon, GbIconComponent],
 })
 export class GbInputComponent implements OnInit {
   constructor() {
@@ -58,7 +59,7 @@ export class GbInputComponent implements OnInit {
   value = input.required<string>();
   color = input("blue");
   level = input(500);
-  icon = input<string>();
+  icon = input<string>("");
   disabled = input(false);
   extraClasses = input("");
   passwordToggle = input(false);
