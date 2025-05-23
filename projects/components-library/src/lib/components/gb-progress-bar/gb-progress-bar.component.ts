@@ -10,6 +10,7 @@ export class GbProgressBarComponent {
   progress = input(0);
   color = input("blue");
   level = input(500);
+  wrapperClass = input("mb-8");
 
   // ##### COMPUTED
   classes = computed(() => {
