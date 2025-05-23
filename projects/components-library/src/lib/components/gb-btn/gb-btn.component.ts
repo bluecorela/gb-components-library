@@ -41,9 +41,6 @@ export class GbBtnComponent {
   extraClasses = input("");
   identity = input("");
 
-  iconCustom = input<string>();
-  sizeCustom = input<string>();
-
   // ##### COMPUTED
   classes = computed(() => {
     const color = this.color();

@@ -11,26 +11,18 @@
     ></ion-spinner>
   }
   @if (icon() && iconPosition() == 'left') {
-    <ion-icon [name]="icon()"></ion-icon>
-  }
-  @if (iconCustom() && iconPosition() == 'left') {
     <gb-icon
-      class="mr-2 flex items-center justify-center"
-      from="font"
-      [size]="sizeCustom()"
-      [icon]="iconCustom() || ''"
+      extraClass="flex mr-1" 
+      size="1.25rem" from="font" 
+      [icon]="icon() || ''"
     ></gb-icon>
   }
   {{ label() }}
   @if (icon() && iconPosition() == 'right') {
-    <ion-icon [name]="icon()"></ion-icon>
-  }
-  @if (iconCustom() && iconPosition() == 'right') {
-    <gb-icon
-      class="ml-2 flex items-center justify-center"
-      from="font"
-      [size]="sizeCustom()"
-      [icon]="iconCustom() || ''"
+  <gb-icon 
+    extraClass="flex ml-1" 
+    size="1.25rem" from="font" 
+    [icon]="icon() || ''"
     ></gb-icon>
   }
   @if (spinner() && spinnerPosition() == 'right') {

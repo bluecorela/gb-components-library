@@ -7,12 +7,13 @@
   @for (num of [0, 1, 2, 3, 4, 5]; track num) {
     <input
       #otpInput
-      type="text"
+      type="number"
       inputmode="numeric"
       [class]="inputClasses()"
-      maxlength="1"
       [readonly]="readonly()"
+      otp="true"
     />
+
   }
 </div>
 @if (errorToken() && errorHint() !== "") {

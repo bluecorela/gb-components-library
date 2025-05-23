@@ -66,6 +66,17 @@ export class GbOtpComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    const otpInputs = document.querySelectorAll<HTMLInputElement>('input[otp="true"]');
+    otpInputs.forEach((input) => {
+      input.addEventListener("input", (e) => {
+        const target = e.target as HTMLInputElement;
+        let value = target.value;
+        value = value.replace(/\D/g, "");
+        if (value.length > 1) value = value.charAt(0);
+        target.value = value;
+      });
+    });
+
     this.setInputValues();
     this.otpInputs.forEach((input) => {
       input.nativeElement.addEventListener(KeyboardEventsEnum.KEYDOWN, (event: KeyboardEvent) =>
