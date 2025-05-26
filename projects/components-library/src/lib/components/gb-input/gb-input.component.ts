@@ -60,6 +60,7 @@ export class GbInputComponent implements OnInit {
   color = input("blue");
   level = input(500);
   icon = input<string>("");
+  iconPosition = input<string>("left");
   disabled = input(false);
   extraClasses = input("");
   passwordToggle = input(false);
@@ -92,6 +93,7 @@ export class GbInputComponent implements OnInit {
   wasFocused() {
     this.focused.update(() => true);
     this.isFocus.update((val) => (val = !val));
+    this.model.update((val) => val.trim());
   }
 
   // OUTPUTS
@@ -101,9 +103,21 @@ export class GbInputComponent implements OnInit {
   classes = computed(() => {
     const color = this.color();
     const level = this.level();
-    let classes = `bg-white w-full rounded-md border border-stroke outline-none transition py-[10px] pr-3`;
-    if (this.icon()) classes += ` pl-12`;
-    else classes += ` pl-3`;
+
+    let classes = `bg-white w-full rounded-md border border-stroke outline-none transition py-[10px]`;
+
+    const hasIcon = this.icon();
+    const iconPos = this.iconPosition();
+    const isPassword = this.type() === "password";
+
+    if (isPassword) {
+      if (hasIcon) classes += ` pl-12 pr-12`;
+      else classes += ` pl-3 pr-12`;
+    } else {
+      if (hasIcon) classes += iconPos === "left" ? ` pl-12 pr-3` : ` pl-3 pr-12`;
+      else classes += ` pl-3 pr-3`;
+    }
+
     classes += ` focus:border-gb-${color}-${level}`;
     if ((this.regex() || this.min() || this.max()) && this.model()) {
       if (!this.isValid()) classes += " focus:border-gb-error-500 border-gb-error-500";
@@ -118,6 +132,10 @@ export class GbInputComponent implements OnInit {
     if (this.forceError().force()) classes += " border-gb-error-500 border-gb-error-500";
     classes += ` ${this.extraClasses()}`;
     return classes;
+  });
+
+  iconClass = computed(() => {
+    return `absolute ${this.iconPosition()}-4 top-1/2 -translate-y-1/2`;
   });
 
   isValid() {

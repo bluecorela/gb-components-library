@@ -17,8 +17,9 @@
     [attr.data-test]="identity() + '-gb-input'"
     #gbInput
   />
+
 <gb-icon [icon]="icon()" color="gb-gray-dark-600" size="1rem" from="font"
-  class="absolute left-4 top-1/2 -translate-y-1/2" extraClass="flex" />
+  [class]="iconClass()" extraClass="flex" />
   @if (type() == 'password' && passwordToggle()) {
     <ion-icon
       [name]="isShowingPassword() ? 'eye-off-outline' : 'eye-outline'"
