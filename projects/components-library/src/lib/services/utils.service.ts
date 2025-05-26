@@ -1,20 +1,20 @@
-// ##### IONIC & ANGULAR
-import { Injectable, inject, signal } from "@angular/core";
-import {
-  ModalController,
-  ToastController,
-  LoadingController,
-  LoadingOptions,
-  AlertController,
-} from "@ionic/angular/standalone";
-import { addIcons } from "ionicons";
 import * as icons from "ionicons/icons";
 
-// ##### GB COMPONENTS
-import { GbGenericModalComponent } from "../components/gb-generic-modal/gb-generic-modal.component";
+import {
+  AlertController,
+  LoadingController,
+  LoadingOptions,
+  ModalController,
+  ToastController,
+} from "@ionic/angular/standalone";
+// ##### IONIC & ANGULAR
+import { Injectable, inject, signal } from "@angular/core";
 
 // ##### TYPES
 import FormObject from "../types/FormObject";
+// ##### GB COMPONENTS
+import { GbGenericModalComponent } from "../components/gb-generic-modal/gb-generic-modal.component";
+import { addIcons } from "ionicons";
 
 @Injectable({
   providedIn: "root",
@@ -39,17 +39,20 @@ export class Utils {
     props,
     mode = "dialog",
     comp = GbGenericModalComponent,
+    backdropDismiss = true,
     enterAnimation,
     leaveAnimation,
   }: {
     props?: object;
     mode?: "dialog" | "fullscreen" | "card";
     comp?: any;
+    backdropDismiss?: boolean;
     enterAnimation?: ((baseEl: HTMLElement) => any) | null;
     leaveAnimation?: ((baseEl: HTMLElement) => any) | null;
   }): Promise<string | null> {
     let id = "";
     const modalObj: any = {
+      backdropDismiss: backdropDismiss,
       component: comp || GbGenericModalComponent,
       componentProps: props,
     };
