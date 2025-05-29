@@ -48,7 +48,7 @@ export class GbInputComponent implements OnInit {
 
   @HostListener("document:click", ["$event"])
   onClickOutside(event: Event) {
-    if (!this.elRef.nativeElement.contains(event.target)) {
+    if (!this.elRef.nativeElement.contains(event.target) && this.type() !== "mask") {
       this.inputElement.nativeElement.blur();
     }
   }
