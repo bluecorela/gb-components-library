@@ -1,28 +1,31 @@
+import * as icons from "ionicons/icons";
+
 // ##### IONIC & ANGULAR
 import {
   Component,
   ElementRef,
   HostListener,
+  OnInit,
   ViewChild,
+  computed,
+  effect,
   inject,
   input,
   output,
   signal,
-  OnInit,
-  effect,
-  computed,
 } from "@angular/core";
+
 import { FormsModule } from "@angular/forms";
-import { IonIcon } from "@ionic/angular/standalone";
-import { addIcons } from "ionicons";
-import * as icons from "ionicons/icons";
 import { GbIconComponent } from "../gb-icon/gb-icon.component";
+import { IonIcon } from "@ionic/angular/standalone";
+import { NgxMaskDirective } from "ngx-mask";
+import { addIcons } from "ionicons";
 
 @Component({
   selector: "gb-input",
   templateUrl: "./gb-input.component.html",
   styleUrls: ["./gb-input.component.scss"],
-  imports: [FormsModule, IonIcon, GbIconComponent],
+  imports: [FormsModule, IonIcon, GbIconComponent, NgxMaskDirective],
 })
 export class GbInputComponent implements OnInit {
   constructor() {
@@ -51,7 +54,8 @@ export class GbInputComponent implements OnInit {
   }
 
   // ##### INPUTS
-  type = input<"text" | "password" | "email" | "number">("text");
+  type = input<"text" | "password" | "email" | "number" | "mask">("text");
+  inputMode = input<"text" | "decimal" | "email" | "numeric" | "tel" | "url">("text");
   label = input("");
   errHint = input("");
   okHint = input("");
