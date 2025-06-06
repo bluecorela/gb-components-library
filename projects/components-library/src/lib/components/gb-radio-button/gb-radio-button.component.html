@@ -1,0 +1,16 @@
+<label class="text-dark mb-[10px] block text-base font-medium">{{ title() }}</label>
+<div [class]="directionclasses()">
+  @for (opts of buttonsList(); track $index) {
+    <label class="custom-radio gb-pb-md flex cursor-pointer items-center grow">
+      <input
+        type="radio"
+        name="{{ opts.nameRadioGroup }}"
+        [value]="opts.id"
+        class="hidden"
+        (change)="onSelectionChange(opts.id)"
+      />
+      <span class="checkmark gb-rounded-border-lg border-gb-stroke-500 relative inline-block h-5 w-5"></span>
+      <span class="gb-ml-lg font-red-hat-300 text-gb-gray-dark-900 text-lg">{{ opts.label }}</span>
+    </label>
+  }
+</div>

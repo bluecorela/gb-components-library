@@ -1,8 +1,7 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { Component, ElementRef, QueryList } from "@angular/core";
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { FormsModule } from "@angular/forms";
 import { GbOtpComponent } from "./gb-otp.component";
-import { TranslateModule } from "@ngx-translate/core";
 
 @Component({
   selector: "gb-host",
@@ -28,7 +27,7 @@ describe("GbOtpComponent", () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GbHostComponent, FormsModule, TranslateModule.forRoot()],
+      imports: [GbHostComponent, FormsModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(GbHostComponent);
