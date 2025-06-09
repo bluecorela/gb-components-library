@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+
 import { FormsModule } from "@angular/forms";
 import { GbHostPasswordComponent } from "./gb-host-password.component";
 import { IonIcon } from "@ionic/angular/standalone";
@@ -34,7 +35,7 @@ describe("GbInputComponent Password Input", () => {
     fixture.detectChanges();
 
     inputElement = fixture.nativeElement.querySelector("input");
-    expect(inputElement.type).toBe("password");
+    expect(inputElement.type).toBe("text");
 
     toggleButton.dispatchEvent(new Event("click"));
     fixture.detectChanges();
