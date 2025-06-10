@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-
 import { Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { GbInputComponent } from "./gb-input.component";

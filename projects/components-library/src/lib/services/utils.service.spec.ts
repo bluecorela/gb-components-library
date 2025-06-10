@@ -124,7 +124,7 @@ describe("Utils Service", () => {
     expect(toastOptions.message).toBe(text);
     expect(toastOptions.duration).toBe(duration);
     expect(toastOptions.position).toBe(position);
-    expect(toastOptions.color).toBe("gb-white-500"); // <- así lo define el servicio
+    expect(toastOptions.color).toBe("gb-white-500");
     expect(toastOptions.icon).toBe("information-circle-outline");
     expect(toastOptions.cssClass).toContain("gb-toast-gb-blue-500");
   });

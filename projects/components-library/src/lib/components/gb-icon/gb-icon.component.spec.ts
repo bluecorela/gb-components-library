@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
-
 import { GbIconComponent } from "./gb-icon.component";
 import { IonicModule } from "@ionic/angular";
 

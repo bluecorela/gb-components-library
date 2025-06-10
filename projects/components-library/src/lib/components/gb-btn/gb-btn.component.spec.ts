@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { IonIcon, IonSpinner } from "@ionic/angular/standalone";
-
 import { By } from "@angular/platform-browser";
 import { Component } from "@angular/core";
 import { GbBtnComponent } from "./gb-btn.component";
@@ -63,7 +62,7 @@ describe("GbBtnComponent", () => {
 
   it("should correctly apply fixed hover, active, and disabled classes", () => {
     hostComponent.fill = "solid";
-    hostComponent.color = "blue"; // Este es el valor por defecto en el componente
+    hostComponent.color = "blue";
     fixture.detectChanges();
 
     const buttonElement = fixture.nativeElement.querySelector("gb-btn button");
