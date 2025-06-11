@@ -1,5 +1,6 @@
 import { Component, ElementRef, QueryList } from "@angular/core";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+
 import { FormsModule } from "@angular/forms";
 import { GbOtpComponent } from "./gb-otp.component";
 
@@ -165,12 +166,14 @@ describe("GbOtpComponent", () => {
     });
   });
 
-  it("should apply bg-gb-gray-light-600 when readValue is not empty", () => {
+  it("should disable manual input (readonly) when readValue is not empty", () => {
     hostComponent.readValue = "123456";
     fixture.detectChanges();
 
-    otpInputs.forEach((input) => {
-      expect(input.classList).toContain("bg-gb-gray-light-600");
+    const inputs = fixture.nativeElement.querySelectorAll('input[otp="true"]');
+    inputs.forEach((input: HTMLInputElement) => {
+      expect(input.readOnly).toBeTrue();
+      expect(input.value).not.toBe("");
     });
   });
 

@@ -123,7 +123,9 @@ describe("Utils Service", () => {
     expect(toastOptions.message).toBe(text);
     expect(toastOptions.duration).toBe(duration);
     expect(toastOptions.position).toBe(position);
-    expect(toastOptions.color).toBe("gb-blue-25");
+    expect(toastOptions.color).toBe("gb-white-500");
+    expect(toastOptions.icon).toBe("information-circle-outline");
+    expect(toastOptions.cssClass).toContain("gb-toast-gb-blue-500");
   });
 
   it("should create and present a toast with type 'default'", async () => {
@@ -132,7 +134,7 @@ describe("Utils Service", () => {
 
     const toastOptions = toastCtrl.create.calls.mostRecent().args[0];
     expect(toastOptions.icon).toBe("information-circle-outline");
-    expect(toastOptions.color).toBe("gb-blue-25");
+    expect(toastOptions.cssClass).toContain("gb-toast-gb-blue-500");
   });
 
   it("should create and present a toast with type 'error'", async () => {
@@ -141,7 +143,7 @@ describe("Utils Service", () => {
 
     const toastOptions = toastCtrl.create.calls.mostRecent().args[0];
     expect(toastOptions.icon).toBe("close-circle-outline");
-    expect(toastOptions.color).toBe("gb-error-25");
+    expect(toastOptions.cssClass).toContain("gb-toast-gb-error-500");
   });
 
   it("should create and present a toast with type 'success'", async () => {
@@ -150,7 +152,8 @@ describe("Utils Service", () => {
 
     const toastOptions = toastCtrl.create.calls.mostRecent().args[0];
     expect(toastOptions.icon).toBe("checkmark-circle-outline");
-    expect(toastOptions.color).toBe("gb-success-25");
+    expect(toastOptions.color).toBe("gb-white-500");
+    expect(toastOptions.cssClass).toContain("gb-toast-gb-success-500");
   });
 
   it("should create and present a toast with type 'warning'", async () => {
@@ -159,6 +162,7 @@ describe("Utils Service", () => {
 
     const toastOptions = toastCtrl.create.calls.mostRecent().args[0];
     expect(toastOptions.icon).toBe("warning-outline");
-    expect(toastOptions.color).toBe("gb-warning-25");
+    expect(toastOptions.color).toBe("gb-white-500");
+    expect(toastOptions.cssClass).toContain("gb-toast-gb-warning-500");
   });
 });
