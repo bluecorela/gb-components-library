@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { Component } from "@angular/core";
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { FormsModule } from "@angular/forms";
-import { GbInputComponent } from "./gb-input.component";
 import { IonIcon } from "@ionic/angular/standalone";
+import { GbInputComponent } from "./gb-input.component";
 
 @Component({
   selector: "gb-host",
@@ -88,4 +88,18 @@ describe("GbInputComponent", () => {
     expect(inputElement.className).toContain("border-gb-error-500");
     expect(inputElement.className).toContain("focus:border-gb-error-500");
   });
+
+  it("should blur input when clicking outside", () => {
+    const inputDebug = fixture.debugElement.query(
+      (el) => el.name === "gb-input"
+    );
+    const inputComponent = inputDebug.componentInstance as GbInputComponent;
+    spyOn(inputComponent, "type").and.returnValue("text");
+    const blurSpy = spyOn(inputComponent.inputElement.nativeElement, "blur");
+    const clickEvent = new MouseEvent("click", { bubbles: true });
+    document.dispatchEvent(clickEvent);
+    fixture.detectChanges();
+    expect(blurSpy).toHaveBeenCalled();
+  });
+
 });
