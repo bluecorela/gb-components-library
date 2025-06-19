@@ -66,10 +66,13 @@ export class Utils {
     }
     if (mode === "card") {
       id = "card-modal";
+
       modalObj.initialBreakpoint = initialBreakP;
       modalObj.breakpoints = breakP;
+      modalObj.handle = true
       modalObj.mode = "ios";
     }
+
     modalObj.id = id;
     let modal = await this.modalCtrl.create(modalObj);
 
