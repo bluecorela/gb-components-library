@@ -42,6 +42,8 @@ export class Utils {
     backdropDismiss = true,
     enterAnimation,
     leaveAnimation,
+    initialBreakP = 1,
+    breakP = [1],
   }: {
     props?: object;
     mode?: "dialog" | "fullscreen" | "card";
@@ -49,6 +51,8 @@ export class Utils {
     backdropDismiss?: boolean;
     enterAnimation?: ((baseEl: HTMLElement) => any) | null;
     leaveAnimation?: ((baseEl: HTMLElement) => any) | null;
+    initialBreakP?: any;
+    breakP?: any;
   }): Promise<string | null> {
     let id = "";
     const modalObj: any = {
@@ -62,10 +66,13 @@ export class Utils {
     }
     if (mode === "card") {
       id = "card-modal";
-      modalObj.initialBreakpoint = 1;
-      modalObj.breakpoints = [1];
+
+      modalObj.initialBreakpoint = initialBreakP;
+      modalObj.breakpoints = breakP;
+      modalObj.handle = true
       modalObj.mode = "ios";
     }
+
     modalObj.id = id;
     let modal = await this.modalCtrl.create(modalObj);
 
