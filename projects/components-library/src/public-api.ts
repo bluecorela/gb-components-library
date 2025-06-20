@@ -16,6 +16,7 @@ export * from "./lib/components/gb-stepper/gb-stepper.component";
 export * from "./lib/components/gb-skeleton/gb-skeleton.component";
 export * from "./lib/components/gb-error-content/gb-error-content.component";
 export * from "./lib/components/gb-radio-button/gb-radio-button.component";
+export * from "./lib/components/gb-badge/gb-badge.component";
 
 //SERVICES
 export * from "./lib/services/utils.service";
