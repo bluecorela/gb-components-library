@@ -15,7 +15,7 @@ export class GbBadgeComponent {
   textSizeWeight = input<string>("text-sm font-red-hat-600");
   borderColor = input<string>("border-gb-cyan-600");
   borderRadius = input<string>("rounded-[30px]");
-  badgeSpacing = input<string>("gb-pl-lg gb-pr-lg gb-pt-xs gb-pb-xs");
+  badgeSpacing = input<string>("px-2.5 py-1");
 
   borderClass = computed(() => (this.badgeType() === "outline" ? `border ${this.borderColor()}` : "border-0"));
   class = computed(
