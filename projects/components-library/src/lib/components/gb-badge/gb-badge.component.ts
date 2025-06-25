@@ -1,10 +1,11 @@
 import { Component, computed, input } from '@angular/core';
+import { GbIconComponent } from "../gb-icon/gb-icon.component";
 
 @Component({
   selector: "gb-badge",
-  imports: [],
   templateUrl: "./gb-badge.component.html",
   styleUrl: "./gb-badge.component.scss",
+  imports: [GbIconComponent],
 })
 export class GbBadgeComponent {
   badgeText = input<string>("Placeholder");
@@ -16,6 +17,9 @@ export class GbBadgeComponent {
   borderColor = input<string>("border-gb-cyan-600");
   borderRadius = input<string>("rounded-[30px]");
   badgeSpacing = input<string>("px-2.5 py-1");
+
+  iconPosition = input<"left" | "right">("left");
+  icon = input<string>();
 
   borderClass = computed(() => (this.badgeType() === "outline" ? `border ${this.borderColor()}` : "border-0"));
   class = computed(

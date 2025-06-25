@@ -1,1 +1,23 @@
-<span [class]="class()"> {{ badgeText() }} </span>
+<span [class]="class()">
+
+    @if (icon() && iconPosition() === 'left') {
+    <gb-icon
+      extraClass="flex mr-1" 
+      size="0.75rem"
+    from="font" 
+      [icon]="icon() || ''"
+    ></gb-icon>
+  }
+    
+    {{ badgeText() }} 
+
+    @if (icon() && iconPosition() === 'right') {
+    <gb-icon
+      extraClass="flex ml-1" 
+      size="0.75rem"
+      from="font" 
+      [icon]="icon() || ''"
+    ></gb-icon>
+  }
+
+</span>
