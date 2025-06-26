@@ -20,6 +20,7 @@ export * from "./lib/components/gb-badge/gb-badge.component";
 
 //SERVICES
 export * from "./lib/services/utils.service";
+export * from "./lib/services/sessionTimeout.service";
 
 // TYPES
 export * from "./lib/types/FormObject";
