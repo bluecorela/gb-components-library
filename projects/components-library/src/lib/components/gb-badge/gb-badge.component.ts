@@ -1,4 +1,5 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input } from "@angular/core";
+
 import { GbIconComponent } from "../gb-icon/gb-icon.component";
 
 @Component({
@@ -8,22 +9,26 @@ import { GbIconComponent } from "../gb-icon/gb-icon.component";
   imports: [GbIconComponent],
 })
 export class GbBadgeComponent {
-  badgeText = input<string>("Placeholder");
-  badgeType = input<"solid" | "outline">("solid");
-
-  bgColor = input<string>("bg-gb-cyan-200");
-  textColor = input<string>("text-gb-cyan-600");
-  textSizeWeight = input<string>("text-sm font-red-hat-600");
-  borderColor = input<string>("border-gb-cyan-600");
-  borderRadius = input<string>("rounded-[30px]");
-  badgeSpacing = input<string>("px-2.5 py-1");
+  text = input<string>("Placeholder");
+  styleBadge = input<"solid" | "outline">("solid");
+  type = input<"button" | "label">("button");
 
   iconPosition = input<"left" | "right">("left");
   icon = input<string>();
 
-  borderClass = computed(() => (this.badgeType() === "outline" ? `border ${this.borderColor()}` : "border-0"));
+  bgColorInput = input<string>("bg-gb-cyan-200");
+  textColorInput = input<string>("text-gb-cyan-600");
+
+  textColor = computed(() => this.textColorInput());
+  borderColor = computed(() =>
+    this.styleBadge() === "outline" ? this.textColorInput().replace("text-", "border-") : "",
+  );
+  borderClass = computed(() => (this.styleBadge() === "outline" ? `border ${this.borderColor()}` : "border-0"));
+  borderRadius = computed(() => (this.type() === "button" ? "gb-rounded-border-10xl" : "gb-rounded-border-6xl"));
+  badgeSpacing = computed(() => (this.type() === "button" ? "px-3 py-2" : "px-2.5 py-1"));
+  textSizeWeight = computed(() => (this.type() === "button" ? `text-md font-red-hat-500` : "text-sm font-red-hat-600"));
   class = computed(
     () =>
-      `inline-flex items-center ${this.badgeSpacing()} ${this.borderRadius()} ${this.textSizeWeight()} ${this.bgColor()} ${this.textColor()} ${this.borderClass()}`,
+      `inline-flex items-center ${this.badgeSpacing()} ${this.borderRadius()} ${this.textSizeWeight()} ${this.bgColorInput()} ${this.textColor()} ${this.borderClass()}`,
   );
 }
