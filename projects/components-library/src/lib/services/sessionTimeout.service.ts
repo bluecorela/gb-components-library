@@ -13,7 +13,7 @@ export class SessionTimeoutService {
   private defaultSessionTimer = 300;
   private defaultModalTimer = 60;
   private sessionTimer = signal(0);
-  private sessionInterval: NodeJS.Timeout | null = null;
+  private sessionInterval: any | null = null;
 
   public startSessionTimeout({
     modalComp,
