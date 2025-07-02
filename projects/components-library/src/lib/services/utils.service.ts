@@ -69,7 +69,7 @@ export class Utils {
 
       modalObj.initialBreakpoint = initialBreakP;
       modalObj.breakpoints = breakP;
-      modalObj.handle = true
+      modalObj.handle = true;
       modalObj.mode = "ios";
     }
 
@@ -227,6 +227,10 @@ export class Utils {
   public dismissLoader() {
     this.activeLoader()?.dismiss();
     this.activeLoader.set(null);
+  }
+
+  public dismissModal() {
+    this.modalCtrl.dismiss();
   }
 
   public cleanStringForRegex(stringVal: string) {

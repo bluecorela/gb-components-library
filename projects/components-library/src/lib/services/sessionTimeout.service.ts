@@ -21,26 +21,48 @@ export class SessionTimeoutService {
     exceptionRoutes,
     sessionTimer,
     modalTimer,
+    toastMessage,
   }: {
-    modalComp: any;
+    modalComp?: any;
     timeoutRedirectRoute: string;
     exceptionRoutes: string[];
     sessionTimer?: number;
     modalTimer?: number;
+    toastMessage?: string;
   }) {
-    this.setSessionTimer(sessionTimer || this.defaultSessionTimer);
-    const showModalAt = modalTimer || this.defaultModalTimer;
+    const totalSessionTime = sessionTimer ?? this.defaultSessionTimer;
+    const showModalAt = modalTimer ?? this.defaultModalTimer;
+
+    this.setSessionTimer(totalSessionTime);
+
     document.addEventListener("click", (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       const isInModal = target.closest("ion-modal") !== null;
-      if (!isInModal) this.setSessionTimer(sessionTimer || this.defaultSessionTimer);
+      if (!isInModal) this.setSessionTimer(totalSessionTime);
     });
+
     this.sessionInterval = setInterval(() => {
       const currentRoute = this.router.url;
+
       if (!exceptionRoutes.includes(currentRoute)) {
         this.sessionTimer.update((val) => val - 1);
-        if (this.sessionTimer() === showModalAt) this.showSessionTimeoutModal(modalComp);
-        if (this.sessionTimer() === 0) this.endSessionTimeout(timeoutRedirectRoute);
+        const remaining = this.sessionTimer();
+
+        if (remaining === showModalAt && modalComp) {
+          this.showSessionTimeoutModal(modalComp);
+        }
+
+        if (remaining === 0) {
+          if (!modalComp && toastMessage) {
+            this.utils.openToast({
+              text: toastMessage,
+              type: "default",
+              id: "session-toast",
+            });
+          }
+
+          this.endSessionTimeout(timeoutRedirectRoute);
+        }
       }
     }, 1000);
   }
@@ -50,6 +72,7 @@ export class SessionTimeoutService {
   }
 
   public endSessionTimeout(redirectRoute: string) {
+    this.utils.dismissModal();
     clearInterval(this.sessionInterval!);
     this.router.navigate([redirectRoute]);
   }
