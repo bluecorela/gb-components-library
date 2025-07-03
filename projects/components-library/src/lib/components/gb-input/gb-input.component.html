@@ -1,44 +1,51 @@
-<label
-  class="text-dark mb-[10px] block text-base font-medium"
-  [attr.data-test]="identity() + '-gb-label'"
->
-  {{ label() }}
-</label>
+@if (label()) {
+  <label
+    class="text-dark mb-[10px] block text-base font-medium"
+    [attr.data-test]="identity() + '-gb-label'"
+  >
+    {{ label() }}
+  </label>
+}
 <div class="relative">
-  @if(type() !== 'mask'){
-  <input
-    [type]="inType()"
-    [placeholder]="placeholder() + (required() ? ' *' : '')"
-    [(ngModel)]="model"
-    [class]="classes()"
-    (focusout)="wasFocused()"
-    (focusin)="wasFocused()"
-    [disabled]="disabled()"
-    [id]="identity()"
-    [attr.inputmode]="inputMode()"
-    [attr.data-test]="identity() + '-gb-input'"
-    #gbInput
-  />
+  @if (type() !== 'mask') {
+    <input
+      [type]="inType()"
+      [placeholder]="placeholder() + (required() ? ' *' : '')"
+      [(ngModel)]="model"
+      [class]="classes()"
+      (focusout)="wasFocused()"
+      (focusin)="wasFocused()"
+      [disabled]="disabled()"
+      [id]="identity()"
+      [attr.inputmode]="inputMode()"
+      [attr.data-test]="identity() + '-gb-input'"
+      #gbInput
+    />
   } @else {
-  <input 
-    [class]="classes()" 
-    [placeholder]="placeholder() + (required() ? ' *' : '')"
-    inputmode="decimal"
-    prefix="$" 
-    type="text" 
-    mask="separator.2" 
-    thousandSeparator="," 
-    decimalMarker="."
-    [dropSpecialCharacters]="false" 
-    [(ngModel)]="model"
-    #gbInputMask
-    [attr.data-test]="identity() + '-gb-input-mask'"
-     />
-    
+    <input
+      [class]="classes()"
+      [placeholder]="placeholder() + (required() ? ' *' : '')"
+      inputmode="decimal"
+      prefix="$"
+      type="text"
+      mask="separator.2"
+      thousandSeparator=","
+      decimalMarker="."
+      [dropSpecialCharacters]="false"
+      [(ngModel)]="model"
+      #gbInputMask
+      [attr.data-test]="identity() + '-gb-input-mask'"
+    />
   }
 
-<gb-icon [icon]="icon()" color="gb-gray-dark-600" size="1rem" from="font"
-  [class]="iconClass()" extraClass="flex" />
+  <gb-icon
+    [icon]="icon()"
+    color="gb-gray-dark-600"
+    size="1rem"
+    from="font"
+    [class]="iconClass()"
+    extraClass="flex"
+  />
   @if (type() == 'password' && passwordToggle()) {
     <ion-icon
       [name]="isShowingPassword() ? 'eye-off-outline' : 'eye-outline'"
