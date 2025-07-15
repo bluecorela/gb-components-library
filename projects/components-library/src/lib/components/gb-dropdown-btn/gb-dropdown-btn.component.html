@@ -1,0 +1,41 @@
+<span #contextMenu>
+  <!-- TRIGGER BTN -->
+  <button
+    class="active:text-gb-gray-light-400 text-gb-blue-500 bg-gb-no-color border-gb-blue-500 hover:bg-gb-blue-50 active:bg-gb-blue-500 inline-flex items-center justify-center gap-2.5 rounded-md px-7 py-3 text-center text-base font-medium active:text-white"
+    (click)="toggleValue()"
+  >
+    @if (icon()) {
+      <gb-icon
+        extraClass="flex gb-mr-md"
+        size="1.25rem"
+        [icon]="icon()"
+      />
+    }
+
+    {{ label() }}
+    <gb-icon
+      extraClass="flex gb-ml-md"
+      size="1.25rem"
+      [icon]="chevronDirection()"
+    />
+  </button>
+  <!-- /TRIGGER BTN -->
+
+  <!-- CONTEXT MENU -->
+  <div
+    [class]="contextMenuClasses()"
+    [style]="`left: ${left()}px; margin-top: ${top()}px; max-width: 300px;`"
+  >
+    <div class="gb-shadow-flat gb-rounded-border-md bg-gb-white gb-py-sm">
+      @for (opt of menuOptions(); track opt.label) {
+        <div
+          class="text-gb-blue-500 hover:bg-gb-blue-25 block cursor-pointer select-none px-5 py-2"
+          (click)="clickOption(opt.callback)"
+        >
+          {{opt.label}}
+        </div>
+      }
+    </div>
+  </div>
+  <!-- /CONTEXT MENU -->
+</span>
