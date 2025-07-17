@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, ViewChild, computed, inject, input, output } from "@angular/core";
+import { Component, ElementRef, HostListener, ViewChild, computed, inject, input, signal } from "@angular/core";
 
 import { ContextMenuItem } from "./gb-dropdown-btn.interface";
 import { GbIconComponent } from "../gb-icon/gb-icon.component";
@@ -14,37 +14,36 @@ export class GbDropdownBtnComponent {
 
   @HostListener("document:click", ["$event"])
   handleClickOutside(event: MouseEvent) {
-    if (!this.elementRef.nativeElement.contains(event.target)) this.valueChange.emit(false);
+    if (!this.elementRef.nativeElement.contains(event.target)) this.isOpen.set(false);
   }
 
   private elementRef = inject(ElementRef);
 
-  value = input.required<boolean>();
   label = input("");
   left = input(0);
   top = input(0);
   icon = input("");
-  menuOptions = input<ContextMenuItem[]>();
+  menuOptions = input.required<ContextMenuItem[]>();
 
-  valueChange = output<boolean>();
+  isOpen = signal(false);
 
   toggleValue() {
-    this.valueChange.emit(!this.value());
+    this.isOpen.update((val) => !val);
   }
-
-  chevronDirection = computed(() => {
-    if (this.value()) return "chevron-up";
-    return "chevron-down";
-  });
 
   clickOption(fn: Function) {
     fn();
-    this.valueChange.emit(false);
+    this.isOpen.set(false);
   }
+
+  chevronDirection = computed(() => {
+    if (this.isOpen()) return "chevron-up";
+    return "chevron-down";
+  });
 
   contextMenuClasses = computed(() => {
     let classes = "absolute z-40 transition-all";
-    if (this.value()) classes += " opacity-100 visible";
+    if (this.isOpen()) classes += " opacity-100 visible";
     else classes += " invisible opacity-0";
     return classes;
   });
