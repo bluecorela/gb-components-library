@@ -5,7 +5,9 @@ import {
   Component,
   ElementRef,
   HostListener,
+  OnChanges,
   OnInit,
+  SimpleChanges,
   ViewChild,
   computed,
   effect,
@@ -27,17 +29,15 @@ import { addIcons } from "ionicons";
   styleUrls: ["./gb-input.component.scss"],
   imports: [FormsModule, IonIcon, GbIconComponent, NgxMaskDirective],
 })
-export class GbInputComponent implements OnInit {
+export class GbInputComponent implements OnInit, OnChanges {
   constructor() {
     addIcons(icons);
     // ##### EFFECTS
     effect(() => {
-      if (this.value() !== "" && !this.valueLoaded()) {
-        this.model.update(() => this.value());
-        this.valueLoaded.update(() => true);
+      if (this.model() !== this.value() && this.valueLoaded()) {
+        this.valueChange.emit(this.model());
       }
-      this.valueChange.emit(this.model());
-    });
+    }, { allowSignalWrites: true });
   }
 
   // ##### VIEW CHILDS
@@ -167,5 +167,13 @@ export class GbInputComponent implements OnInit {
   ngOnInit(): void {
     this.model.update(() => this.value());
     this.inType.update(() => this.type());
+    this.valueLoaded.set(true);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['value'] && !changes['value'].isFirstChange()) {
+      this.model.set(this.value());
+      this.valueLoaded.set(true);
+    }
   }
 }
