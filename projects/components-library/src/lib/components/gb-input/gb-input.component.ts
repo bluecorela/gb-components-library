@@ -141,6 +141,9 @@ export class GbInputComponent implements OnInit, OnChanges {
   iconClass = computed(() => {
     return `absolute ${this.iconPosition()}-4 top-1/2 -translate-y-1/2`;
   });
+  public toggleCleanView = () => {
+    this.model.set("");
+  };
 
   isValid() {
     const min = this.min();
@@ -152,7 +155,6 @@ export class GbInputComponent implements OnInit, OnChanges {
     if (regex) return this.validateRegex(regexArray);
     return true;
   }
-
   validateRegex(rgx: RegExp | RegExp[], index?: number) {
     let r = Array.isArray(rgx) ? rgx : [rgx];
     if (typeof index !== "undefined") r = [r[index]];
