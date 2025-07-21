@@ -68,6 +68,7 @@ export class GbInputComponent implements OnInit, OnChanges {
   disabled = input(false);
   extraClasses = input("");
   passwordToggle = input(false);
+  clearable = input(false);
   regex = input<RegExp | RegExp[]>(new RegExp(""));
   required = input(false);
   min = input<number>();

@@ -46,7 +46,7 @@
     [class]="iconClass()"
     extraClass="flex"
   />
-  @if(model()){
+  @if(model() && type() !== 'password' && clearable()){
   <gb-icon
     [icon]="'close-circle-outline'"
     size="1rem"
