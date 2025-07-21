@@ -46,6 +46,15 @@
     [class]="iconClass()"
     extraClass="flex"
   />
+  @if (model() && type() !== 'password' && clearable()) {
+    <ion-icon
+      name="close-circle-outline"
+      class="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
+      color="medium"
+      (click)="toggleCleanView()"
+      data-test="clear-input-gb-icon"
+    />
+  }
   @if (type() == 'password' && passwordToggle()) {
     <ion-icon
       [name]="isShowingPassword() ? 'eye-off-outline' : 'eye-outline'"
