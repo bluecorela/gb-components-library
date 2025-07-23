@@ -1,8 +1,10 @@
 <span #contextMenu>
   <!-- TRIGGER BTN -->
+  <!-- class="active:text-gb-gray-light-400 text-gb-blue-500 bg-gb-no-color border-gb-blue-500 hover:bg-gb-blue-50 active:bg-gb-blue-500 inline-flex items-center justify-center gap-2.5 rounded-md px-7 py-3 text-center text-base font-medium active:text-white" -->
   <button
-    class="active:text-gb-gray-light-400 text-gb-blue-500 bg-gb-no-color border-gb-blue-500 hover:bg-gb-blue-50 active:bg-gb-blue-500 inline-flex items-center justify-center gap-2.5 rounded-md px-7 py-3 text-center text-base font-medium active:text-white"
     (click)="toggleValue()"
+    [disabled]="disabled()"
+    [class]="classes()"
   >
     @if (icon()) {
       <gb-icon

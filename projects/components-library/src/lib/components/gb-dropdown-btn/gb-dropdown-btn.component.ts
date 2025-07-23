@@ -23,6 +23,7 @@ export class GbDropdownBtnComponent {
   left = input(0);
   top = input(0);
   icon = input("");
+  disabled = input(false);
   menuOptions = input.required<ContextMenuItem[]>();
 
   isOpen = signal(false);
@@ -35,6 +36,15 @@ export class GbDropdownBtnComponent {
     fn();
     this.isOpen.set(false);
   }
+
+  classes = computed(() => {
+    let classes =
+      "bg-gb-no-color inline-flex items-center justify-center gap-2.5 rounded-md px-7 py-3 text-center text-base font-medium";
+    if (!this.disabled())
+      classes += " active:text-white text-gb-blue-500 border-gb-blue-500 hover:bg-gb-blue-50 active:bg-gb-blue-500";
+    else classes += " text-gb-gray-dark-600 border-gb-gray-dark-600";
+    return classes;
+  });
 
   chevronDirection = computed(() => {
     if (this.isOpen()) return "chevron-up";
