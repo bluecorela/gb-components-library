@@ -10,6 +10,7 @@
   @if (type() !== 'mask') {
     <input
       [type]="inType()"
+      [autocapitalize]="autocapitalize()"
       [placeholder]="placeholder() + (required() ? ' *' : '')"
       [(ngModel)]="model"
       [class]="classes()"
@@ -28,6 +29,7 @@
       inputmode="decimal"
       prefix="$"
       type="text"
+      [autocapitalize]="autocapitalize()"
       mask="separator.2"
       thousandSeparator=","
       decimalMarker="."
