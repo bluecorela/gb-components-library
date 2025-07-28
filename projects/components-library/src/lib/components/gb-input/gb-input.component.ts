@@ -56,7 +56,7 @@ export class GbInputComponent implements OnInit, OnChanges {
   // ##### INPUTS
   type = input<"text" | "password" | "email" | "number" | "mask">("text");
   inputMode = input<"text" | "decimal" | "email" | "numeric" | "tel" | "url">("text");
-  autocapitalize = input("");
+  autocapitalize = input<"off" | "none" | "sentences" | "on" | "words" | "characters">("off");
   label = input("");
   errHint = input("");
   okHint = input("");
