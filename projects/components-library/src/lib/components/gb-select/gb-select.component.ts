@@ -86,6 +86,7 @@ export class GbSelectComponent {
       if (!this.selected()) classes += " focus:border-gb-error-500 border-gb-error-500";
     }
     if (!this.selected()) classes += " text-dark-6";
+    classes += ` ${this.extraClasses()}`;
     return classes;
   });
 
