@@ -41,8 +41,9 @@ export class GbDropdownBtnComponent {
     let classes =
       "bg-gb-no-color inline-flex items-center justify-center gap-2.5 rounded-md px-7 py-3 text-center text-base font-medium";
     if (!this.disabled())
-      classes += " active:text-white text-gb-blue-500 border-gb-blue-500 hover:bg-gb-blue-50 active:bg-gb-blue-500";
+      classes += " active:text-gb-white text-gb-blue-500 border-gb-blue-500 hover:bg-gb-blue-25 active:bg-gb-blue-500";
     else classes += " text-gb-gray-dark-600 border-gb-gray-dark-600";
+    if (this.isOpen()) classes += " bg-gb-blue-25";
     return classes;
   });
 
