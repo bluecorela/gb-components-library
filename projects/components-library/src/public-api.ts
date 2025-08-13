@@ -23,6 +23,7 @@ export * from "./lib/components/gb-dropdown-btn/gb-dropdown-btn.component";
 //SERVICES
 export * from "./lib/services/utils.service";
 export * from "./lib/services/sessionTimeout.service";
+export * from "./lib/services/prisma.service";
 
 // TYPES
 export * from "./lib/types/FormObject";
