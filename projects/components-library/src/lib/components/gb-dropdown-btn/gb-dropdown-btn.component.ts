@@ -11,6 +11,8 @@ import { GbIconComponent } from "../gb-icon/gb-icon.component";
 })
 export class GbDropdownBtnComponent {
   @ViewChild("contextMenu") boxRef!: ElementRef;
+  @ViewChild("triggerBtn") triggerBtn!: ElementRef;
+  @ViewChild("dropdownMenu") dropdownMenu!: ElementRef;
 
   @HostListener("document:click", ["$event"])
   handleClickOutside(event: MouseEvent) {
@@ -53,6 +55,10 @@ export class GbDropdownBtnComponent {
   });
 
   contextMenuClasses = computed(() => {
+    if (this.triggerBtn && this.dropdownMenu) {
+      const btnWidth = this.triggerBtn.nativeElement.offsetWidth;
+      this.dropdownMenu.nativeElement.style.width = `${btnWidth}px`;
+    }
     let classes = "absolute z-40 transition-all";
     if (this.isOpen()) classes += " opacity-100 visible";
     else classes += " invisible opacity-0";
