@@ -150,7 +150,7 @@ export class GbInputComponent implements OnInit, OnChanges {
   hasPrefix = computed(() => !!this.phonePrefix());
 
   prefixClass = computed(() => {
-    let classes = `absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none select-none`;
+    let classes = `absolute left-4 top-1/2 -translate-y-1/2`;
     if (this.prefixExtraClasses()) classes += ` ${this.prefixExtraClasses()}`;
     return classes;
   });
