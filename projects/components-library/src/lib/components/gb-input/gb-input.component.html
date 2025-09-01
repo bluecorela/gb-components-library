@@ -7,7 +7,7 @@
   </label>
 }
 <div class="relative">
-  @if (type() !== 'mask') {
+  @if (type() !== 'money' && type() !== 'phone') {
     <input
       [type]="inType()"
       [autocapitalize]="autocapitalize()"
@@ -21,6 +21,16 @@
       [attr.inputmode]="inputMode()"
       [attr.data-test]="identity() + '-gb-input'"
       #gbInput
+    />
+  } @else if (type() === 'phone') {
+    <input
+      [class]="classes()"
+      type="text"
+      [attr.inputmode]="'tel'"
+      mask="0000-0000"
+      [dropSpecialCharacters]="false"
+      [(ngModel)]="model"
+      #gbInputPhone
     />
   } @else {
     <input
@@ -65,6 +75,11 @@
       (click)="togglePass()"
       data-test="password-gb-icon"
     />
+  }
+  @if (hasPrefix()) {
+    <span [class]="prefixClass()">
+      {{ phonePrefix() }}
+    </span>
   }
 </div>
 @if (regex() || typeof min() !== 'undefined' || typeof max() !== 'undefined') {

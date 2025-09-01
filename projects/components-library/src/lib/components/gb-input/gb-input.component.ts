@@ -48,13 +48,13 @@ export class GbInputComponent implements OnInit, OnChanges {
 
   @HostListener("document:click", ["$event"])
   onClickOutside(event: Event) {
-    if (!this.elRef.nativeElement.contains(event.target) && this.type() !== "mask") {
+    if (!this.elRef.nativeElement.contains(event.target) && this.type() !== "money") {
       this.inputElement.nativeElement.blur();
     }
   }
 
   // ##### INPUTS
-  type = input<"text" | "password" | "email" | "number" | "mask">("text");
+  type = input<"text" | "password" | "email" | "number" | "money" | "phone">("text");
   inputMode = input<"text" | "decimal" | "email" | "numeric" | "tel" | "url">("text");
   autocapitalize = input<"off" | "none" | "sentences" | "on" | "words" | "characters">("off");
   label = input("");
@@ -76,6 +76,8 @@ export class GbInputComponent implements OnInit, OnChanges {
   max = input<number>();
   identity = input("");
   regexMessages = input<string[]>();
+  phonePrefix = input<string>("");
+  prefixExtraClasses = input<string>("");
   forceError = input({
     force: signal(false),
     msg: signal(""),
@@ -121,6 +123,7 @@ export class GbInputComponent implements OnInit, OnChanges {
       else classes += ` pl-3 pr-12`;
     } else {
       if (hasIcon) classes += iconPos === "left" ? ` pl-12 pr-3` : ` pl-3 pr-12`;
+      else if (this.hasPrefix()) classes += ` pl-[70px] pr-3`;
       else classes += ` pl-3 pr-3`;
     }
 
@@ -143,6 +146,15 @@ export class GbInputComponent implements OnInit, OnChanges {
   iconClass = computed(() => {
     return `absolute ${this.iconPosition()}-4 top-1/2 -translate-y-1/2`;
   });
+
+  hasPrefix = computed(() => !!this.phonePrefix());
+
+  prefixClass = computed(() => {
+    let classes = `absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none select-none`;
+    if (this.prefixExtraClasses()) classes += ` ${this.prefixExtraClasses()}`;
+    return classes;
+  });
+
   public toggleCleanView = () => {
     this.model.set("");
   };
