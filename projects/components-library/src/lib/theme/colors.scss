@@ -1,4 +1,14 @@
-@use 'sass:color';
+@use "sass:color";
+
+// TEXTS
+$gb-text-primary: #414651;
+$gb-text-secondary: #7a8294;
+
+// GRAY STROKE
+$gb-stroke-500: #d5d8dd;
+
+// WHITE
+$gb-white-500: white;
 
 // GRAY LIGHT
 $gb-gray-light-400: #fafafa; // Gray 1
@@ -92,6 +102,16 @@ $gb-colors: (
   // TRANSPARENT
   no-color: transparent,
 
+  // TEXTS
+  gb-text-primary: $gb-text-primary,
+  gb-text-secondary: $gb-text-secondary,
+
+  // STROKE
+  gb-stroke-500: $gb-stroke-500,
+
+  // WHITE
+  gb-white-500: $gb-white-500,
+
   // GRAYS
   gb-gray-light-400: $gb-gray-light-400,
   gb-gray-light-500: $gb-gray-light-500,
@@ -183,9 +203,9 @@ $gb-colors: (
 
 :root {
   @each $name, $color in $gb-colors {
-    $r: color.channel($color, 'red');
-    $g: color.channel($color, 'green');
-    $b: color.channel($color, 'blue');
+    $r: color.channel($color, "red");
+    $g: color.channel($color, "green");
+    $b: color.channel($color, "blue");
     --ion-color-#{$name}: #{$color};
     --ion-color-new-rgb-#{$name}: #{$r}, #{$g}, #{$b};
   }
@@ -240,14 +260,5 @@ $gb-colors: (
   // CHECKBOX
   input:checked ~ .box\:border-#{$name} {
     border-color: $color !important;
-  }
-
-  // TOAST
-  ion-toast.gb-toast-#{$name}::part(icon) {
-    background-color: $color;
-    border-radius: 50%;
-    font-size: 1rem;
-    padding: 3px;
-    color: white
   }
 }

@@ -12,6 +12,7 @@ export class GbCheckboxComponent {
   label = input('');
   color = input('blue');
   level = input(500);
+  bgColor = input("");
   disabled = input(false);
   extraClasses = input('');
   identity = input.required();
@@ -30,6 +31,7 @@ export class GbCheckboxComponent {
     const level = this.level();
     let classes = `flex items-center justify-center w-5 h-5 mr-4 border border-stroke rounded box box:border-gb-${color}-${level}`;
     if (this.disabled()) classes += ` bg-gray-2`;
+    if (this.value()) classes += ` ${ this.bgColor()}`;
     classes += ` ${this.extraClasses()}`;
     return classes;
   });

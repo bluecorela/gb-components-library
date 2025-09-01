@@ -1,8 +1,8 @@
+import { Component, ElementRef, QueryList } from "@angular/core";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { Component } from "@angular/core";
+
 import { FormsModule } from "@angular/forms";
 import { GbOtpComponent } from "./gb-otp.component";
-import { TranslateModule } from "@ngx-translate/core";
 
 @Component({
   selector: "gb-host",
@@ -28,7 +28,7 @@ describe("GbOtpComponent", () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GbHostComponent, FormsModule, TranslateModule.forRoot()],
+      imports: [GbHostComponent, FormsModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(GbHostComponent);
@@ -166,12 +166,14 @@ describe("GbOtpComponent", () => {
     });
   });
 
-  it("should apply bg-gb-gray-light-300 when readValue is not empty", () => {
+  it("should disable manual input (readonly) when readValue is not empty", () => {
     hostComponent.readValue = "123456";
     fixture.detectChanges();
 
-    otpInputs.forEach((input) => {
-      expect(input.classList).toContain("bg-gb-gray-light-300");
+    const inputs = fixture.nativeElement.querySelectorAll('input[otp="true"]');
+    inputs.forEach((input: HTMLInputElement) => {
+      expect(input.readOnly).toBeTrue();
+      expect(input.value).not.toBe("");
     });
   });
 
@@ -261,4 +263,14 @@ describe("GbOtpComponent", () => {
     });
   });
 
+  it("should safely exit clearAllInputs when otpInputs is undefined or empty", () => {
+    const otpComponent = fixture.debugElement.children[0].componentInstance as GbOtpComponent;
+
+    (otpComponent as any).otpInputs = undefined as any;
+
+    expect(() => (otpComponent as any).clearAllInputs()).not.toThrow();
+
+    (otpComponent as any).otpInputs = new QueryList<ElementRef>();
+    expect(() => (otpComponent as any).clearAllInputs()).not.toThrow();
+  });
 });

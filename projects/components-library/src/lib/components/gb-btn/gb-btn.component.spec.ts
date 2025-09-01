@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { IonIcon, IonSpinner } from "@ionic/angular/standalone";
+import { By } from "@angular/platform-browser";
 import { Component } from "@angular/core";
 import { GbBtnComponent } from "./gb-btn.component";
 
@@ -32,17 +33,17 @@ describe("GbBtnComponent", () => {
     hostComponent.fill = "solid";
     hostComponent.color = "blue";
     hostComponent.level = 500;
-
     fixture.detectChanges();
 
-    const buttonElement = fixture.nativeElement.querySelector("gb-btn button");
+    const gbBtnDebug = fixture.debugElement.query(By.directive(GbBtnComponent));
+    const buttonElement: HTMLButtonElement = gbBtnDebug.nativeElement.querySelector("button");
 
     expect(buttonElement.className).toContain("bg-gb-blue-500");
     expect(buttonElement.className).toContain("text-white");
     expect(buttonElement.className).toContain("border-gb-blue-500");
-    expect(buttonElement.className).toContain("hover:bg-gb-blue-600");
-    expect(buttonElement.className).toContain("active:bg-gb-blue-700");
-    expect(buttonElement.className).toContain("disabled:bg-gb-gray-light-300");
+    expect(buttonElement.className).toContain("hover:border-gb-blue-400");
+    expect(buttonElement.className).toContain("active:bg-gb-blue-600");
+    expect(buttonElement.className).toContain("disabled:bg-gb-gray-light-500");
   });
 
   it("should apply correct classes when fill is outline", () => {
@@ -54,42 +55,25 @@ describe("GbBtnComponent", () => {
 
     const buttonElement = fixture.nativeElement.querySelector("gb-btn button");
 
-    expect(buttonElement.className).toContain("text-gb-green-300");
-    expect(buttonElement.className).toContain("border-gb-green-300");
+    expect(buttonElement.className).toContain("text-gb-green-500");
+    expect(buttonElement.className).toContain("border-gb-green-500");
     expect(buttonElement.className).toContain("bg-gb-no-color");
   });
 
-  it("should correctly calculate hover (h), active (a), and disabled (d) levels", () => {
-    hostComponent.level = 600;
+  it("should correctly apply fixed hover, active, and disabled classes", () => {
+    hostComponent.fill = "solid";
+    hostComponent.color = "blue";
     fixture.detectChanges();
-    let buttonElement = fixture.nativeElement.querySelector("gb-btn button");
 
-    expect(buttonElement.className).toContain("hover:bg-gb-blue-700");
-    expect(buttonElement.className).toContain("active:bg-gb-blue-800");
-    expect(buttonElement.className).toContain("disabled:bg-gb-gray-light-300");
+    const buttonElement = fixture.nativeElement.querySelector("gb-btn button");
+    const classList = buttonElement.className;
 
-    hostComponent.level = 900;
-    fixture.detectChanges();
-    buttonElement = fixture.nativeElement.querySelector("gb-btn button");
-
-    expect(buttonElement.className).toContain("hover:bg-gb-blue-950");
-    expect(buttonElement.className).toContain("active:bg-gb-blue-950");
-    expect(buttonElement.className).toContain("disabled:bg-gb-gray-light-300");
-
-    hostComponent.level = 100;
-    fixture.detectChanges();
-    buttonElement = fixture.nativeElement.querySelector("gb-btn button");
-
-    expect(buttonElement.className).toContain("hover:bg-gb-blue-200");
-    expect(buttonElement.className).toContain("active:bg-gb-blue-300");
-    expect(buttonElement.className).toContain("disabled:bg-gb-gray-light-300");
-
-    hostComponent.level = 10;
-    fixture.detectChanges();
-    buttonElement = fixture.nativeElement.querySelector("gb-btn button");
-
-    expect(buttonElement.className).toContain("hover:bg-gb-blue-110");
-    expect(buttonElement.className).toContain("active:bg-gb-blue-210");
-    expect(buttonElement.className).toContain("disabled:bg-gb-gray-light-300");
+    expect(classList).toContain("hover:border-gb-blue-400");
+    expect(classList).toContain("active:bg-gb-blue-600");
+    expect(classList).toContain("border-gb-blue-500");
+    expect(classList).toContain("bg-gb-blue-500");
+    expect(classList).toContain("text-white");
+    expect(classList).toContain("disabled:bg-gb-gray-light-500");
+    expect(classList).toContain("disabled:text-gb-dark-600");
   });
 });

@@ -6,11 +6,10 @@ import {
   ViewChildren,
   computed,
   effect,
-  inject,
   input,
   output,
+  signal,
 } from "@angular/core";
-import { TranslateService } from "@ngx-translate/core";
 import { REGEX } from "../../constants/regex";
 
 // ##### TYPES
@@ -30,8 +29,6 @@ type KeyboardEventsEnum = (typeof KeyboardEventsEnum)[keyof typeof KeyboardEvent
   styleUrl: "./gb-otp.component.scss",
 })
 export class GbOtpComponent implements AfterViewInit {
-  public translate = inject(TranslateService);
-
   @ViewChildren("otpInput") otpInputs!: QueryList<ElementRef>;
 
   // #####INPUTS
@@ -39,6 +36,7 @@ export class GbOtpComponent implements AfterViewInit {
   label = input<string>("");
   errorToken = input<boolean>(false);
   errorHint = input("");
+  readonly = signal(false);
 
   // ##### OUTPUTS
   valueChange = output<string>();
@@ -46,15 +44,11 @@ export class GbOtpComponent implements AfterViewInit {
   // ### COMPUTED
   inputClasses = computed(() => {
     const baseClass: string =
-      "w-full shadow-xs items-center justify-center rounded-lg border border-stroke bg-gb-gray-light-25 p-2 text-center text-2xl font-medium text-gb-gray-dark-900 outline-none sm:text-4xl";
+      "w-full shadow-xs items-center justify-center rounded-lg border border-stroke bg-white p-3 text-center text-2xl font-medium text-gb-gray-dark-900 outline-none sm:text-4xl";
     let finalClass: string = baseClass;
 
     if (this.errorToken()) {
       finalClass = finalClass.replace("border-stroke", "border-gb-error-500");
-    }
-
-    if (this.readValue() !== "") {
-      finalClass = finalClass.replace("bg-gb-gray-light-25", "bg-gb-gray-light-300");
     }
 
     return finalClass;
@@ -65,10 +59,24 @@ export class GbOtpComponent implements AfterViewInit {
     effect(() => {
       this.readValue();
       this.setInputValues();
+      if (this.errorToken()) {
+        this.clearAllInputs();
+      }
     });
   }
 
   ngAfterViewInit(): void {
+    const otpInputs = document.querySelectorAll<HTMLInputElement>('input[otp="true"]');
+    otpInputs.forEach((input) => {
+      input.addEventListener("input", (e) => {
+        const target = e.target as HTMLInputElement;
+        let value = target.value;
+        value = value.replace(/\D/g, "");
+        if (value.length > 1) value = value.charAt(0);
+        target.value = value;
+      });
+    });
+
     this.setInputValues();
     this.otpInputs.forEach((input) => {
       input.nativeElement.addEventListener(KeyboardEventsEnum.KEYDOWN, (event: KeyboardEvent) =>
@@ -97,12 +105,13 @@ export class GbOtpComponent implements AfterViewInit {
       return;
     }
 
+    this.readonly.update(() => true);
+
     const inputsArray = this.otpInputs.toArray().map((el) => el.nativeElement);
     const otpArray = this.readValue().split("");
 
     inputsArray.forEach((input, index) => {
       input.value = otpArray[index] || "";
-      input.disabled = true;
     });
 
     this.emitOtpValue();
@@ -168,5 +177,15 @@ export class GbOtpComponent implements AfterViewInit {
       .toArray()
       .map((el) => el.nativeElement.value)
       .join("");
+  }
+
+  private clearAllInputs(): void {
+    if (!this.otpInputs || this.otpInputs.length === 0) return;
+    const inputsArray = this.otpInputs.toArray().map((el) => el.nativeElement);
+    inputsArray.forEach((input) => {
+      input.value = "";
+      input.disabled = false;
+    });
+    this.emitOtpValue();
   }
 }

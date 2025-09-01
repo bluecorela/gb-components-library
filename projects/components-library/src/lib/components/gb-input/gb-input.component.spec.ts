@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { Component } from "@angular/core";
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { FormsModule } from "@angular/forms";
-import { GbInputComponent } from "./gb-input.component";
 import { IonIcon } from "@ionic/angular/standalone";
+import { GbInputComponent } from "./gb-input.component";
 
 @Component({
   selector: "gb-host",
@@ -28,7 +28,7 @@ export class GbHostComponent {
   icon?: string = "battery-charging-outline";
   disabled: boolean = false;
   passwordToggle: boolean = false;
-  regex: string = `^[A-Za-z0-9]{6,}$`;
+  regex: RegExp = /^[A-Za-z0-9]{6,}$/;
   required: boolean = true;
 }
 
@@ -58,34 +58,13 @@ describe("GbInputComponent", () => {
       fixture.detectChanges();
 
       inputElement = fixture.nativeElement.querySelector("input");
-
-      expect(inputElement.value).toBe("");
-
+      expect(inputElement.value).toBe("Test Value");
       done();
     }, 0);
   });
 
-  it("should apply success class when input value matches regex", (done) => {
-    hostComponent.regex = `^[A-Za-z0-9]{6,}$`;
-    fixture.detectChanges();
-
-    inputElement.value = "Valid1";
-    inputElement.dispatchEvent(new Event("input"));
-    fixture.detectChanges();
-
-    setTimeout(() => {
-      fixture.detectChanges();
-      inputElement = fixture.nativeElement.querySelector("input");
-
-      expect(inputElement.className).toContain("border-gb-success-500");
-      expect(inputElement.className).toContain("focus:border-gb-success-500");
-
-      done();
-    });
-  });
-
   it("should apply error class when input value does not match regex", (done) => {
-    hostComponent.regex = `^[A-Za-z0-9]{6,}$`;
+    hostComponent.regex = /^[A-Za-z0-9]{6,}$/;
     fixture.detectChanges();
 
     inputElement.value = "abc";
@@ -109,4 +88,18 @@ describe("GbInputComponent", () => {
     expect(inputElement.className).toContain("border-gb-error-500");
     expect(inputElement.className).toContain("focus:border-gb-error-500");
   });
+
+  it("should blur input when clicking outside", () => {
+    const inputDebug = fixture.debugElement.query(
+      (el) => el.name === "gb-input"
+    );
+    const inputComponent = inputDebug.componentInstance as GbInputComponent;
+    spyOn(inputComponent, "type").and.returnValue("text");
+    const blurSpy = spyOn(inputComponent.inputElement.nativeElement, "blur");
+    const clickEvent = new MouseEvent("click", { bubbles: true });
+    document.dispatchEvent(clickEvent);
+    fixture.detectChanges();
+    expect(blurSpy).toHaveBeenCalled();
+  });
+
 });

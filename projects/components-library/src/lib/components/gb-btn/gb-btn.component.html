@@ -2,18 +2,33 @@
   [class]="classes()"
   [disabled]="disabled()"
   [id]="identity()"
-  [attr.data-test]="identity() + '-gb-btn'">
+  [attr.data-test]="identity() + '-gb-btn'"
+>
   @if (spinner() && spinnerPosition() == 'left') {
-    <ion-spinner [name]="spinner()" [color]="color()"></ion-spinner>
+    <ion-spinner
+      [name]="spinner()"
+      [color]="color()"
+    ></ion-spinner>
   }
   @if (icon() && iconPosition() == 'left') {
-    <ion-icon [name]="icon()"></ion-icon>
+    <gb-icon
+      extraClass="flex mr-1" 
+      size="1.25rem" from="font" 
+      [icon]="icon() || ''"
+    ></gb-icon>
   }
   {{ label() }}
   @if (icon() && iconPosition() == 'right') {
-    <ion-icon [name]="icon()"></ion-icon>
+  <gb-icon 
+    extraClass="flex ml-1" 
+    size="1.25rem" from="font" 
+    [icon]="icon() || ''"
+    ></gb-icon>
   }
   @if (spinner() && spinnerPosition() == 'right') {
-    <ion-spinner [name]="spinner()" [color]="color()"></ion-spinner>
+    <ion-spinner
+      [name]="spinner()"
+      [color]="color()"
+    ></ion-spinner>
   }
 </button>

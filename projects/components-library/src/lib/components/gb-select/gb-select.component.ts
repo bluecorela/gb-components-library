@@ -1,14 +1,15 @@
 import * as icons from "ionicons/icons";
 
 // ##### IONIC & ANGULAR
-import { Component, ElementRef, HostListener, computed, effect, inject, input, output, signal } from "@angular/core";
+import { Component, signal, input, computed, output, effect, HostListener, ElementRef, inject } from "@angular/core";
 import { IonIcon } from "@ionic/angular/standalone";
 import { addIcons } from "ionicons";
+import * as icons from "ionicons/icons";
 
 @Component({
-  selector: 'gb-select',
-  templateUrl: './gb-select.component.html',
-  styleUrls: ['./gb-select.component.scss'],
+  selector: "gb-select",
+  templateUrl: "./gb-select.component.html",
+  styleUrls: ["./gb-select.component.scss"],
   imports: [IonIcon],
 })
 export class GbSelectComponent {
@@ -19,8 +20,10 @@ export class GbSelectComponent {
     });
   }
 
+  // ##### INJECTS
   elRef = inject(ElementRef);
-  @HostListener('document:click', ['$event'])
+
+  @HostListener("document:click", ["$event"])
   onClickOutside(event: Event) {
     if (!this.elRef.nativeElement.contains(event.target)) {
       this.isDropdownOpen.update(() => false);
@@ -30,27 +33,29 @@ export class GbSelectComponent {
   // ##### INPUTS
   value = input.required<string>();
   options = input<{ label: string; value: string }[]>([]);
-  label = input('');
-  placeholder = input('');
-  icon = input('');
+  label = input("");
+  placeholder = input("");
+  icon = input("");
   disabled = input(false);
-  extraClasses = input('');
+  extraClasses = input("");
   required = input(false);
-  identity = input('');
+  identity = input("");
 
   // ##### OUTPUTS
   valueChange = output<string>();
 
   // ##### SIGNALS
-  selected = signal<string>('');
+  selected = signal<string>("");
   focused = signal(false);
   isDropdownOpen = signal(false);
 
   // ##### METHODS
   async openSelect() {
-    if (this.disabled()) return;
-    this.isDropdownOpen.update(() => !this.isDropdownOpen());
-    this.wasFocused();
+    setTimeout(() => {
+      if (this.disabled()) return;
+      this.isDropdownOpen.update(() => !this.isDropdownOpen());
+      this.wasFocused();
+    }, 100);
   }
 
   selectOption(option: string) {
@@ -65,11 +70,11 @@ export class GbSelectComponent {
   // ##### COMPUTED
   returnPlaceholder = computed(() => {
     let label = this.placeholder();
-    if (this.required()) label += ' *';
-    if (!this.value()) return { label: label, value: '' };
+    if (this.required()) label += " *";
+    if (!this.value()) return { label: label, value: "" };
     const options = [...this.options()];
-    const found = options.find(el => el.value === this.selected());
-    return found || { label: '', value: '' };
+    const found = options.find((el) => el.value === this.selected());
+    return found || { label: "", value: "" };
   });
 
   classes = computed(() => {
@@ -88,12 +93,12 @@ export class GbSelectComponent {
   });
 
   dropdownClasses = computed(() => {
-    if (this.isDropdownOpen()) return 'top-full opacity-100 visible';
-    return 'top-[110%] invisible opacity-0';
+    if (this.isDropdownOpen()) return "top-full opacity-100 visible";
+    return "top-[110%] invisible opacity-0";
   });
 
   selectChevronIcon = computed(() => {
-    if (this.isDropdownOpen()) return 'chevron-up-outline';
-    else return 'chevron-down-outline';
+    if (this.isDropdownOpen()) return "chevron-up-outline";
+    else return "chevron-down-outline";
   });
 }

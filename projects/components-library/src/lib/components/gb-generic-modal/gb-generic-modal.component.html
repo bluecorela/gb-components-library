@@ -20,7 +20,8 @@
             [label]="primaryText()"
             (click)="closeModal('success')"
             extraClasses="w-full"
-            identity="success_btn" />
+            identity="success_btn"
+            data-test="confirm-btn" />
         </ion-col>
       </ion-row>
     }
@@ -33,7 +34,8 @@
             color="error"
             (click)="closeModal('cancel')"
             extraClasses="w-full"
-            identity="cancel_btn" />
+            identity="cancel_btn"
+            data-test="deny-btn" />
         </ion-col>
       </ion-row>
     }

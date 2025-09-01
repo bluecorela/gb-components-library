@@ -1,49 +1,119 @@
-<label class="mb-[10px] block text-base font-medium text-dark">
-  {{ label() }}
-</label>
+@if (label()) {
+  <label
+    class="text-dark mb-[10px] block text-base font-medium"
+    [attr.data-test]="identity() + '-gb-label'"
+  >
+    {{ label() }}
+  </label>
+}
 <div class="relative">
-  <input
-    [type]="inType()"
-    [placeholder]="placeholder() + (required() ? ' *' : '')"
-    [(ngModel)]="model"
-    [class]="classes()"
-    (focusout)="wasFocused()"
-    (focusin)="wasFocused()"
-    [disabled]="disabled()"
-    [id]="identity()"
-    [attr.data-test]="identity() + '-gb-input'" />
-  <ion-icon
-    [name]="icon()"
-    class="absolute top-1/2 left-4 -translate-y-1/2"
-    color="medium" />
+  @if (type() !== 'mask') {
+    <input
+      [type]="inType()"
+      [autocapitalize]="autocapitalize()"
+      [placeholder]="placeholder() + (required() ? ' *' : '')"
+      [(ngModel)]="model"
+      [class]="classes()"
+      (focusout)="wasFocused()"
+      (focusin)="wasFocused()"
+      [disabled]="disabled()"
+      [id]="identity()"
+      [attr.inputmode]="inputMode()"
+      [attr.data-test]="identity() + '-gb-input'"
+      #gbInput
+    />
+  } @else {
+    <input
+      [class]="classes()"
+      [placeholder]="placeholder() + (required() ? ' *' : '')"
+      inputmode="decimal"
+      prefix="$"
+      type="text"
+      [autocapitalize]="autocapitalize()"
+      mask="separator.2"
+      thousandSeparator=","
+      decimalMarker="."
+      [dropSpecialCharacters]="false"
+      [(ngModel)]="model"
+      #gbInputMask
+      [attr.data-test]="identity() + '-gb-input-mask'"
+    />
+  }
+
+  <gb-icon
+    [icon]="icon()"
+    color="gb-gray-dark-600"
+    size="1rem"
+    from="font"
+    [class]="iconClass()"
+    extraClass="flex"
+  />
+  @if (model() && type() !== 'password' && clearable()) {
+    <ion-icon
+      name="close-circle-outline"
+      class="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
+      color="medium"
+      (click)="toggleCleanView()"
+      data-test="clear-input-gb-icon"
+    />
+  }
   @if (type() == 'password' && passwordToggle()) {
     <ion-icon
       [name]="isShowingPassword() ? 'eye-off-outline' : 'eye-outline'"
-      class="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer"
+      class="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
       color="medium"
-      (click)="togglePass()" />
+      (click)="togglePass()"
+      data-test="password-gb-icon"
+    />
   }
 </div>
 @if (regex() || typeof min() !== 'undefined' || typeof max() !== 'undefined') {
   @if (okHint() && model() && isValid()) {
-    <p class="mt-[10px] text-sm text-gb-success-500">{{ okHint() }}</p>
+    <p
+      class="text-gb-success-500 mt-[5px] text-sm"
+      [attr.data-test]="identity() + '-gb-success-label'"
+    >
+      {{ okHint() }}
+    </p>
   }
   @if (errHint() && model() && !isValid()) {
-    <p class="mt-[10px] text-sm text-gb-error-500">{{ errHint() }}</p>
+    <p
+      class="text-gb-error-500 mt-[5px] text-sm"
+      [attr.data-test]="identity() + '-gb-error-label'"
+    >
+      {{ errHint() }}
+    </p>
   }
 }
 
+@if (forceError().force()) {
+  <p
+    [attr.data-test]="identity() + '-gb-force-error-label'"
+    class="text-gb-error-500 mt-[5px] text-sm"
+  >
+    {{
+    forceError().msg() }}
+  </p>
+}
+
 @if (regexMessages() && isFocus()) {
-  <ul class="gb-mt-md">
+  <ul
+    class="gb-mt-md"
+    [attr.data-test]="identity() + '-gb-regexMessages'"
+  >
     @for (msg of regexMessages(); track msg; let idx = $index) {
       <li
         [class]="
-          validateRegex([regex()[idx]])
+          validateRegex(regex(), idx)
             ? 'text-gb-success-500 flex'
             : 'text-gb-gray-dark-500 flex'
-        ">
+        "
+      >
         <span class="mr-1">
-          <ion-icon name="checkmark-circle-outline" class="display-xs" />
+          <ion-icon
+            name="checkmark-circle-outline"
+            class="display-xs"
+          />
         </span>
         <span class="text-sm">{{ msg }}</span>
       </li>

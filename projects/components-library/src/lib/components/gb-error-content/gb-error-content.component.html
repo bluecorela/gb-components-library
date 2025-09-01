@@ -1,0 +1,39 @@
+@if (shouldShowErrorLoading()) {
+  <ion-row class="h-full items-center justify-center text-center">
+    <ion-col size="12">
+      <ion-spinner name="circular"></ion-spinner>
+    </ion-col>
+  </ion-row>
+} @else {
+  <ion-row class="h-full items-center justify-center text-center">
+    <ion-col size="12">
+      <div>
+        <gb-icon
+          icon="warning"
+          size="52.93px"
+          from="font"
+          data-test="gb-error-icon"
+        />
+      </div>
+      <p
+        class="text-md text-gb-gray-dark-600"
+        data-test="gb-error-title"
+      >
+        {{ messageError() }}
+      </p>
+      @if (showRefreshBtn) {
+        <div class="gb-mt-xl">
+          <gb-btn
+            [label]="btnLabel()"
+            [fill]="'outline'"
+            [color]="'blue'"
+            [icon]="'reload'"
+            [iconPosition]="'left'"
+            [identity]="'reload'"
+            (click)="onClick()"
+          />
+        </div>
+      }
+    </ion-col>
+  </ion-row>
+}

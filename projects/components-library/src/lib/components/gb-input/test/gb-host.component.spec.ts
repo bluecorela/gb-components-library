@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+
 import { FormsModule } from "@angular/forms";
 import { GbHostComponent } from "./gb-host.component";
 import { IonIcon } from "@ionic/angular/standalone";
@@ -27,7 +28,7 @@ describe("GbInputComponent", () => {
     setTimeout(() => {
       fixture.detectChanges();
       inputElement = fixture.nativeElement.querySelector("input");
-      expect(inputElement.value).toBe("");
+      expect(inputElement.value).toBe("Test Value");
       done();
     }, 0);
   });
