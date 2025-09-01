@@ -1,5 +1,3 @@
-import * as icons from "ionicons/icons";
-
 // ##### IONIC & ANGULAR
 import { Component, signal, input, computed, output, effect, HostListener, ElementRef, inject } from "@angular/core";
 import { IonIcon } from "@ionic/angular/standalone";
