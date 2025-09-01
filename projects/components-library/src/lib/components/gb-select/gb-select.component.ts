@@ -1,18 +1,9 @@
+import * as icons from "ionicons/icons";
+
 // ##### IONIC & ANGULAR
-import {
-  Component,
-  signal,
-  input,
-  computed,
-  output,
-  effect,
-  HostListener,
-  ElementRef,
-  inject,
-} from '@angular/core';
-import { IonIcon } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import * as icons from 'ionicons/icons';
+import { Component, ElementRef, HostListener, computed, effect, inject, input, output, signal } from "@angular/core";
+import { IonIcon } from "@ionic/angular/standalone";
+import { addIcons } from "ionicons";
 
 @Component({
   selector: 'gb-select',
@@ -83,17 +74,16 @@ export class GbSelectComponent {
 
   classes = computed(() => {
     let classes =
-      'relative z-20 w-full appearance-none rounded-md border border-stroke py-[10px] pr-12 outline-none transition';
-    if (this.icon()) classes += ' pl-12';
-    else classes += ' pl-4';
-    if (this.disabled()) classes += ' cursor-not-allowed bg-gray-2';
-    else classes += ' cursor-pointer bg-transparent';
-    // if (this.required() && this.focused()) {
-    //   if (!this.selected())
-    //     classes += ' focus:border-gb-error-500 border-gb-error-500';
-    //   else classes += ' focus:border-gb-success-500 border-gb-success-500';
-    // }
-    if (!this.selected()) classes += ' text-dark-6';
+      "relative z-20 w-full appearance-none rounded-md border border-stroke py-[10px] pr-12 outline-none transition text-gb-text-primary";
+    if (this.icon()) classes += " pl-12";
+    else classes += " pl-4";
+    if (this.disabled()) classes += " cursor-not-allowed bg-gray-2";
+    else classes += " cursor-pointer bg-transparent";
+    if (this.required() && this.focused()) {
+      if (!this.selected()) classes += " focus:border-gb-error-500 border-gb-error-500";
+    }
+    if (!this.selected()) classes += " text-dark-6";
+    classes += ` ${this.extraClasses()}`;
     return classes;
   });
 
