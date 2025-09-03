@@ -48,3 +48,12 @@
     (click)="openSelect()"
   />
 </div>
+
+@if (requiredMessages() !== ""  && this.required() && this.focused()) {
+  <p
+    class="text-gb-error-500 mt-[5px] text-sm"
+  >
+    {{
+    requiredMessages() }}
+  </p>
+}

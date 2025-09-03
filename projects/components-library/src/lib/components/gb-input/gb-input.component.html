@@ -11,7 +11,7 @@
     <input
       [type]="inType()"
       [autocapitalize]="autocapitalize()"
-      [placeholder]="placeholder() + (required() ? ' *' : '')"
+      [placeholder]="placeholder()"
       [(ngModel)]="model"
       [class]="classes()"
       (focusout)="wasFocused()"
@@ -25,13 +25,15 @@
   } @else {
     <input
       [class]="classes()"
-      [placeholder]="placeholder() + (required() ? ' *' : '')"
+      [placeholder]="placeholder()"
       inputmode="decimal"
       type="text"
       [autocapitalize]="autocapitalize()"
       mask="separator.2"
       thousandSeparator=","
       decimalMarker="."
+      (focusout)="wasFocused()"
+      (focusin)="wasFocused()"
       [dropSpecialCharacters]="false"
       [(ngModel)]="model"
       #gbInputMask
@@ -95,6 +97,16 @@
   </p>
 }
 
+
+@if (requiredMessages() !== ""  && this.required() && !this.model() && this.focused()) {
+  <p
+    class="text-gb-error-500 mt-[5px] text-sm"
+  >
+    {{
+    requiredMessages() }}
+  </p>
+}
+
 @if (regexMessages() && isFocus()) {
   <ul
     class="gb-mt-md"
@@ -119,3 +131,4 @@
     }
   </ul>
 }
+

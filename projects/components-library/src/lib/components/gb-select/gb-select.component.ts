@@ -37,6 +37,7 @@ export class GbSelectComponent {
   disabled = input(false);
   extraClasses = input("");
   required = input(false);
+  requiredMessages = input<string>("");
   identity = input("");
 
   // ##### OUTPUTS
@@ -57,18 +58,21 @@ export class GbSelectComponent {
   }
 
   selectOption(option: string) {
+    console.log("selectOption");
     this.isDropdownOpen.update(() => false);
     this.selected.update(() => option);
   }
 
   wasFocused() {
+    console.log("wasFocused");
+
     this.focused.update(() => true);
   }
 
   // ##### COMPUTED
   returnPlaceholder = computed(() => {
     let label = this.placeholder();
-    if (this.required()) label += " *";
+
     if (!this.value()) return { label: label, value: "" };
     const options = [...this.options()];
     const found = options.find((el) => el.value === this.selected());
