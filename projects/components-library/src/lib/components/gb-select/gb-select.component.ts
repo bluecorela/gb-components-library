@@ -58,14 +58,11 @@ export class GbSelectComponent {
   }
 
   selectOption(option: string) {
-    console.log("selectOption");
     this.isDropdownOpen.update(() => false);
     this.selected.update(() => option);
   }
 
   wasFocused() {
-    console.log("wasFocused");
-
     this.focused.update(() => true);
   }
 
