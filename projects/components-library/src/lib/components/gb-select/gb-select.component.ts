@@ -1,5 +1,5 @@
 // ##### IONIC & ANGULAR
-import { Component, signal, input, computed, output, effect, HostListener, ElementRef, inject } from "@angular/core";
+import { Component, signal, input, computed, output, effect, HostListener, ElementRef, inject, OnInit } from "@angular/core";
 import { IonIcon } from "@ionic/angular/standalone";
 import { addIcons } from "ionicons";
 import * as icons from "ionicons/icons";
@@ -10,16 +10,21 @@ import * as icons from "ionicons/icons";
   styleUrls: ["./gb-select.component.scss"],
   imports: [IonIcon],
 })
-export class GbSelectComponent {
+export class GbSelectComponent implements OnInit{
   constructor() {
     addIcons(icons);
     effect(() => {
       this.valueChange.emit(this.selected());
     });
   }
+  ngOnInit() {
+    if (this.value()) {
+      this.selected.set(this.value());
+    }
+  }
 
   // ##### INJECTS
-  elRef = inject(ElementRef);
+  elRef  = inject(ElementRef);
 
   @HostListener("document:click", ["$event"])
   onClickOutside(event: Event) {
