@@ -37,6 +37,7 @@ export class GbSelectComponent {
   disabled = input(false);
   extraClasses = input("");
   required = input(false);
+  requiredMessages = input<string>("");
   identity = input("");
 
   // ##### OUTPUTS
@@ -68,7 +69,7 @@ export class GbSelectComponent {
   // ##### COMPUTED
   returnPlaceholder = computed(() => {
     let label = this.placeholder();
-    if (this.required()) label += " *";
+
     if (!this.value()) return { label: label, value: "" };
     const options = [...this.options()];
     const found = options.find((el) => el.value === this.selected());

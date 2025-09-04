@@ -72,6 +72,7 @@ export class GbInputComponent implements OnInit, OnChanges {
   clearable = input(false);
   regex = input<RegExp | RegExp[]>(new RegExp(""));
   required = input(false);
+  requiredMessages = input<string>("");
   min = input<number>();
   max = input<number>();
   identity = input("");
