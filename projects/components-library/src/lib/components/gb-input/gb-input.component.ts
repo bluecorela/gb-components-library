@@ -48,7 +48,7 @@ export class GbInputComponent implements OnInit, OnChanges {
 
   @HostListener("document:click", ["$event"])
   onClickOutside(event: Event) {
-    if (!this.elRef.nativeElement.contains(event.target) && !["phone", "money"].includes(this.type())) {
+    if (!this.elRef.nativeElement.contains(event.target) && !this.isMaskedType()) {
       this.inputElement.nativeElement.blur();
     }
   }
@@ -145,6 +145,11 @@ export class GbInputComponent implements OnInit, OnChanges {
   iconClass = computed(() => {
     return `absolute ${this.iconPosition()}-4 top-1/2 -translate-y-1/2`;
   });
+
+  isMaskedType = computed(() => {
+    return ["money", "phone"].includes(this.type());
+  });
+
   public toggleCleanView = () => {
     this.model.set("");
   };
@@ -169,7 +174,7 @@ export class GbInputComponent implements OnInit, OnChanges {
     return true;
   }
 
-  setMask() {
+  setMask(): string {
     if (this.type() === "money") {
       return "separator.2";
     }

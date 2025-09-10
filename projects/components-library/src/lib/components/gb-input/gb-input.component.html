@@ -8,7 +8,7 @@
 }
 <div class="relative">
   <input
-    [type]="(type() === 'money' || type() === 'phone') ? 'text' : inType()"
+    [type]="isMaskedType() ? 'text' : inType()"
     [class]="classes()"
     [placeholder]="placeholder()"
     [autocapitalize]="autocapitalize()"
@@ -21,7 +21,7 @@
     [mask]="setMask()"
     [thousandSeparator]="type() === 'money' ? ',' : ''"
     [decimalMarker]="'.'"
-    [dropSpecialCharacters]="(type() === 'money' || type() === 'phone') ? false : null"
+    [dropSpecialCharacters]="isMaskedType() ? false : null"
     [prefix]="prefix()"
     #gbInput
   />
