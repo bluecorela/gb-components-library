@@ -7,40 +7,25 @@
   </label>
 }
 <div class="relative">
-  @if (type() !== 'mask') {
-    <input
-      [type]="inType()"
-      [autocapitalize]="autocapitalize()"
-      [placeholder]="placeholder()"
-      [(ngModel)]="model"
-      [class]="classes()"
-      (focusout)="wasFocused()"
-      (focusin)="wasFocused()"
-      [disabled]="disabled()"
-      [id]="identity()"
-      [attr.inputmode]="inputMode()"
-      [attr.data-test]="identity() + '-gb-input'"
-      #gbInput
-    />
-  } @else {
-    <input
-      [class]="classes()"
-      [placeholder]="placeholder()"
-      inputmode="decimal"
-      type="text"
-      [autocapitalize]="autocapitalize()"
-      mask="separator.2"
-      thousandSeparator=","
-      decimalMarker="."
-      (focusout)="wasFocused()"
-      (focusin)="wasFocused()"
-      [dropSpecialCharacters]="false"
-      [(ngModel)]="model"
-      #gbInputMask
-      [attr.data-test]="identity() + '-gb-input-mask'"
-    />
-  }
-
+  <input
+    [type]="(type() === 'money' || type() === 'phone') ? 'text' : inType()"
+    [class]="classes()"
+    [placeholder]="placeholder()"
+    [autocapitalize]="autocapitalize()"
+    [(ngModel)]="model"
+    (focusout)="wasFocused()"
+    (focusin)="wasFocused()"
+    [disabled]="disabled()"
+    [id]="identity()"
+    [attr.data-test]="identity() + '-gb-input'"
+    [mask]="setMask()"
+    [thousandSeparator]="type() === 'money' ? ',' : ''"
+    [decimalMarker]="'.'"
+    [dropSpecialCharacters]="(type() === 'money' || type() === 'phone') ? false : null"
+    [prefix]="prefix()"
+    #gbInput
+  />
+  
   <gb-icon
     [icon]="icon()"
     color="gb-gray-dark-600"

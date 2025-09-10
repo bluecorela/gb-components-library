@@ -48,13 +48,13 @@ export class GbInputComponent implements OnInit, OnChanges {
 
   @HostListener("document:click", ["$event"])
   onClickOutside(event: Event) {
-    if (!this.elRef.nativeElement.contains(event.target) && this.type() !== "mask") {
+    if (!this.elRef.nativeElement.contains(event.target) && !["phone", "money"].includes(this.type())) {
       this.inputElement.nativeElement.blur();
     }
   }
 
   // ##### INPUTS
-  type = input<"text" | "password" | "email" | "number" | "mask">("text");
+  type = input<"text" | "password" | "email" | "number" | "phone" | "money">("text");
   inputMode = input<"text" | "decimal" | "email" | "numeric" | "tel" | "url">("text");
   autocapitalize = input<"off" | "none" | "sentences" | "on" | "words" | "characters">("off");
   label = input("");
@@ -81,6 +81,7 @@ export class GbInputComponent implements OnInit, OnChanges {
     force: signal(false),
     msg: signal(""),
   });
+  prefix = input("");
 
   // ##### SIGNALS
   model = signal<string>("");
@@ -166,6 +167,16 @@ export class GbInputComponent implements OnInit, OnChanges {
       if (!rx.test(`${this.model().trim()}`)) return false;
     }
     return true;
+  }
+
+  setMask() {
+    if (this.type() === "money") {
+      return "separator.2";
+    }
+    if (this.type() === "phone") {
+      return "0000-0000";
+    }
+    return "";
   }
 
   // ##### LC HOOKS
