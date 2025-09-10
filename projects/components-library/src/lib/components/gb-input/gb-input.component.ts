@@ -174,14 +174,16 @@ export class GbInputComponent implements OnInit, OnChanges {
     return true;
   }
 
-  setMask(): string {
-    if (this.type() === "money") {
-      return "separator.2";
-    }
-    if (this.type() === "phone") {
-      return "0000-0000";
-    }
+  getMask(): string {
+    if (this.type() === "money") return "separator.2";
+    if (this.type() === "phone") return "0000-0000";
     return "";
+  }
+
+  getInputMode(): string {
+    if (this.type() === "money") return "decimal";
+    if (this.type() === "phone") return "numeric";
+    return this.inputMode();
   }
 
   // ##### LC HOOKS

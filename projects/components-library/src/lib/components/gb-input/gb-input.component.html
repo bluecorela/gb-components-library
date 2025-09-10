@@ -18,11 +18,12 @@
     [disabled]="disabled()"
     [id]="identity()"
     [attr.data-test]="identity() + '-gb-input'"
-    [mask]="setMask()"
+    [mask]="getMask()"
     [thousandSeparator]="type() === 'money' ? ',' : ''"
     [decimalMarker]="'.'"
     [dropSpecialCharacters]="isMaskedType() ? false : null"
     [prefix]="prefix()"
+    [attr.inputmode]="getInputMode()"
     #gbInput
   />
   
