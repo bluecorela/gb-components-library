@@ -19,6 +19,7 @@ export * from "./lib/components/gb-radio-button/gb-radio-button.component";
 export * from "./lib/components/gb-badge/gb-badge.component";
 export * from "./lib/components/gb-segment/gb-segment.component";
 export * from "./lib/components/gb-dropdown-btn/gb-dropdown-btn.component";
+export * from "./lib/components/gb-textarea/gb-textarea.component";
 
 //SERVICES
 export * from "./lib/services/utils.service";

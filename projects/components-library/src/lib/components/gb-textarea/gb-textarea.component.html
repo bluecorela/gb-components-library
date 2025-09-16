@@ -1,0 +1,56 @@
+@if (label()) {
+  <label
+    class="text-dark mb-[10px] block text-base font-medium"
+    [attr.data-test]="identity() + '-gb-ta-label'"
+  >
+    {{ label() }}
+  </label>
+}
+<div class="relative">
+  <textarea
+    [class]="classes()"
+    [placeholder]="placeholder()"
+    [autocapitalize]="autocapitalize()"
+    [(ngModel)]="model"
+    (focusout)="wasFocused()"
+    (focusin)="wasFocused()"
+    [disabled]="disabled()"
+    [id]="identity()"
+    [attr.data-test]="identity() + '-gb-textarea'"
+    #gbTextArea
+  ></textarea>
+</div>
+
+@if (regex() && okHint() && model() && isValid()) {
+  <p
+    class="text-gb-success-500 mt-[5px] text-sm"
+    [attr.data-test]="identity() + '-gb-success-label'"
+  >
+    {{ okHint() }}
+  </p>
+}
+@if (regex() && errHint() && model() && !isValid()) {
+  <p
+    class="text-gb-error-500 mt-[5px] text-sm"
+    [attr.data-test]="identity() + '-gb-error-label'"
+  >
+    {{ errHint() }}
+  </p>
+}
+
+@if (forceError().force()) {
+  <p
+    [attr.data-test]="identity() + '-gb-force-error-label'"
+    class="text-gb-error-500 mt-[5px] text-sm"
+  >
+    {{
+    forceError().msg() }}
+  </p>
+}
+
+@if (requiredMessages() !== ""  && this.required() && !this.model() && this.focused()) {
+  <p class="text-gb-error-500 mt-[5px] text-sm">
+    {{
+    requiredMessages() }}
+  </p>
+}
