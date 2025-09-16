@@ -41,10 +41,10 @@ describe("GbTextAreaComponent", () => {
     hostComponent = fixture.componentInstance;
     fixture.detectChanges();
 
-    textAreaElement = fixture.nativeElement.querySelector("input");
+    textAreaElement = fixture.nativeElement.querySelector("textarea");
   });
 
-  it("should initialize model with value input", (done) => {
+  it("should initialize model with value textarea", (done) => {
     hostComponent.value = "Test Value";
 
     fixture.detectChanges();
@@ -52,18 +52,18 @@ describe("GbTextAreaComponent", () => {
     setTimeout(() => {
       fixture.detectChanges();
 
-      textAreaElement = fixture.nativeElement.querySelector("input");
+      textAreaElement = fixture.nativeElement.querySelector("textarea");
       expect(textAreaElement.value).toBe("Test Value");
       done();
     }, 0);
   });
 
-  it("should apply error class when input value does not match regex", (done) => {
+  it("should apply error class when textarea value does not match regex", (done) => {
     hostComponent.regex = /^[A-Za-z0-9]{6,}$/;
     fixture.detectChanges();
 
     textAreaElement.value = "abc";
-    textAreaElement.dispatchEvent(new Event("input"));
+    textAreaElement.dispatchEvent(new Event("textarea"));
     fixture.detectChanges();
 
     setTimeout(() => {

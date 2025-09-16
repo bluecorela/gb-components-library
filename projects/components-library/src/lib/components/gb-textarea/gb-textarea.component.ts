@@ -36,7 +36,7 @@ export class GbTextAreaComponent implements OnInit, OnChanges {
   }
 
   // ##### VIEW CHILDS
-  @ViewChild("gbTextArea") inputElement!: ElementRef<HTMLTextAreaElement>;
+  @ViewChild("gbTextArea") textAreaElement!: ElementRef<HTMLTextAreaElement>;
 
   // ##### INJECTS
   elRef = inject(ElementRef);
@@ -44,7 +44,7 @@ export class GbTextAreaComponent implements OnInit, OnChanges {
   @HostListener("document:click", ["$event"])
   onClickOutside(event: Event) {
     if (!this.elRef.nativeElement.contains(event.target)) {
-      this.inputElement.nativeElement.blur();
+      this.textAreaElement.nativeElement.blur();
     }
   }
 
