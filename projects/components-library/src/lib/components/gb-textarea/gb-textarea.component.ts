@@ -93,7 +93,7 @@ export class GbTextAreaComponent implements OnInit, OnChanges {
     const color = this.color();
     const level = this.level();
 
-    let classes = `bg-white w-full rounded-md border border-stroke outline-none transition px-5 py-[10px]`;
+    let classes = `bg-white w-full rounded-md border border-stroke outline-none transition px-5 py-[10px] block`;
 
     classes += ` focus:border-gb-${color}-${level}`;
     if ((this.regex() || this.min() || this.max()) && this.model()) {
