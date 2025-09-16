@@ -62,8 +62,6 @@ export class GbTextAreaComponent implements OnInit, OnChanges {
   regex = input<RegExp | RegExp[]>(new RegExp(""));
   required = input(false);
   requiredMessages = input<string>("");
-  min = input<number>();
-  max = input<number>();
   identity = input("");
   regexMessages = input<string[]>();
   forceError = input({
@@ -96,7 +94,7 @@ export class GbTextAreaComponent implements OnInit, OnChanges {
     let classes = `bg-white w-full rounded-md border border-stroke outline-none transition px-5 py-[10px] block`;
 
     classes += ` focus:border-gb-${color}-${level}`;
-    if ((this.regex() || this.min() || this.max()) && this.model()) {
+    if (this.regex() && this.model()) {
       if (!this.isValid()) classes += " focus:border-gb-error-500 border-gb-error-500";
     }
     if (this.required() && !this.model() && this.focused()) {
@@ -116,15 +114,12 @@ export class GbTextAreaComponent implements OnInit, OnChanges {
   };
 
   isValid() {
-    const min = this.min();
-    const max = this.max();
-    if (min != undefined && parseFloat(this.model()) < min) return false;
-    if (max != undefined && parseFloat(this.model()) > max) return false;
     const regex = this.regex();
     const regexArray = Array.isArray(regex) ? regex : [regex];
     if (regex) return this.validateRegex(regexArray);
     return true;
   }
+
   validateRegex(rgx: RegExp | RegExp[], index?: number) {
     let r = Array.isArray(rgx) ? rgx : [rgx];
     if (typeof index !== "undefined") r = [r[index]];

@@ -1,7 +1,7 @@
 @if (label()) {
   <label
     class="text-dark mb-[10px] block text-base font-medium"
-    [attr.data-test]="identity() + '-gb-label'"
+    [attr.data-test]="identity() + '-gb-ta-label'"
   >
     {{ label() }}
   </label>
@@ -20,23 +20,22 @@
     #gbTextArea
   ></textarea>
 </div>
-@if (regex() || typeof min() !== 'undefined' || typeof max() !== 'undefined') {
-  @if (okHint() && model() && isValid()) {
-    <p
-      class="text-gb-success-500 mt-[5px] text-sm"
-      [attr.data-test]="identity() + '-gb-success-label'"
-    >
-      {{ okHint() }}
-    </p>
-  }
-  @if (errHint() && model() && !isValid()) {
-    <p
-      class="text-gb-error-500 mt-[5px] text-sm"
-      [attr.data-test]="identity() + '-gb-error-label'"
-    >
-      {{ errHint() }}
-    </p>
-  }
+
+@if (regex() && okHint() && model() && isValid()) {
+  <p
+    class="text-gb-success-500 mt-[5px] text-sm"
+    [attr.data-test]="identity() + '-gb-success-label'"
+  >
+    {{ okHint() }}
+  </p>
+}
+@if (regex() && errHint() && model() && !isValid()) {
+  <p
+    class="text-gb-error-500 mt-[5px] text-sm"
+    [attr.data-test]="identity() + '-gb-error-label'"
+  >
+    {{ errHint() }}
+  </p>
 }
 
 @if (forceError().force()) {
