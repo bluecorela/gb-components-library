@@ -20,24 +20,26 @@ import {
 import { FormsModule } from "@angular/forms";
 import { GbIconComponent } from "../gb-icon/gb-icon.component";
 import { IonIcon } from "@ionic/angular/standalone";
-import { NgxMaskDirective } from "ngx-mask";
 import { addIcons } from "ionicons";
 
 @Component({
   selector: "gb-input",
   templateUrl: "./gb-input.component.html",
   styleUrls: ["./gb-input.component.scss"],
-  imports: [FormsModule, IonIcon, GbIconComponent, NgxMaskDirective],
+  imports: [FormsModule, IonIcon, GbIconComponent],
 })
 export class GbInputComponent implements OnInit, OnChanges {
   constructor() {
     addIcons(icons);
     // ##### EFFECTS
-    effect(() => {
-      if (this.model() !== this.value() && this.valueLoaded()) {
-        this.valueChange.emit(this.model());
-      }
-    }, { allowSignalWrites: true });
+    effect(
+      () => {
+        if (this.model() !== this.value() && this.valueLoaded()) {
+          this.valueChange.emit(this.model());
+        }
+      },
+      { allowSignalWrites: true },
+    );
   }
 
   // ##### VIEW CHILDS
@@ -48,7 +50,7 @@ export class GbInputComponent implements OnInit, OnChanges {
 
   @HostListener("document:click", ["$event"])
   onClickOutside(event: Event) {
-    if (!this.elRef.nativeElement.contains(event.target) && !this.isMaskedType()) {
+    if (!this.elRef.nativeElement.contains(event.target)) {
       this.inputElement.nativeElement.blur();
     }
   }
@@ -62,8 +64,6 @@ export class GbInputComponent implements OnInit, OnChanges {
   okHint = input("");
   placeholder = input("");
   value = input.required<string>();
-  color = input("blue");
-  level = input(500);
   icon = input<string>("");
   iconPosition = input<string>("left");
   disabled = input(false);
@@ -81,7 +81,6 @@ export class GbInputComponent implements OnInit, OnChanges {
     force: signal(false),
     msg: signal(""),
   });
-  prefix = input("");
 
   // ##### SIGNALS
   model = signal<string>("");
@@ -104,14 +103,40 @@ export class GbInputComponent implements OnInit, OnChanges {
     this.model.update((val) => val.trim());
   }
 
+  keyPress() {
+    if (this.type() === "money") this.model.update((val) => this.formatAmount(val));
+    if (this.type() === "phone") this.model.update((val) => this.formatPhone(val));
+  }
+
+  formatAmount(input: string) {
+    if (input === "0.0" || !input) return "";
+    let digits = input.replace(/\D/g, "");
+    if (digits.length === 0) return "0.00";
+    let number = parseInt(digits, 10) / 100;
+    return number.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
+
+  formatPhone(input: string) {
+    if (input === "+507" || !input) return "";
+    const hasPrefix = input.startsWith("+507");
+    let digits = input.replace(/\D/g, "");
+    if (hasPrefix && digits.startsWith("507")) digits = digits.slice(3);
+    digits = digits.slice(0, 8);
+    let formatted: string;
+    if (digits.length === 7) formatted = `${digits.slice(0, 3)}-${digits.slice(3)}`;
+    else if (digits.length === 8) formatted = `${digits.slice(0, 4)}-${digits.slice(4)}`;
+    else formatted = digits;
+    return `+507 ${formatted}`;
+  }
+
   // OUTPUTS
   valueChange = output<string | number>();
 
   // ##### COMPUTED
   classes = computed(() => {
-    const color = this.color();
-    const level = this.level();
-
     let classes = `bg-white w-full rounded-md border border-stroke outline-none transition py-[10px]`;
 
     const hasIcon = this.icon();
@@ -126,7 +151,7 @@ export class GbInputComponent implements OnInit, OnChanges {
       else classes += ` pl-3 pr-3`;
     }
 
-    classes += ` focus:border-gb-${color}-${level}`;
+    classes += ` focus:border-gb-blue-500`;
     if ((this.regex() || this.min() || this.max()) && this.model()) {
       if (!this.isValid()) classes += " focus:border-gb-error-500 border-gb-error-500";
     }
@@ -146,10 +171,6 @@ export class GbInputComponent implements OnInit, OnChanges {
     return `absolute ${this.iconPosition()}-4 top-1/2 -translate-y-1/2`;
   });
 
-  isMaskedType = computed(() => {
-    return ["money", "phone"].includes(this.type());
-  });
-
   public toggleCleanView = () => {
     this.model.set("");
   };
@@ -164,6 +185,7 @@ export class GbInputComponent implements OnInit, OnChanges {
     if (regex) return this.validateRegex(regexArray);
     return true;
   }
+
   validateRegex(rgx: RegExp | RegExp[], index?: number) {
     let r = Array.isArray(rgx) ? rgx : [rgx];
     if (typeof index !== "undefined") r = [r[index]];
@@ -172,12 +194,6 @@ export class GbInputComponent implements OnInit, OnChanges {
       if (!rx.test(`${this.model().trim()}`)) return false;
     }
     return true;
-  }
-
-  getMask(): string {
-    if (this.type() === "money") return "separator.2";
-    if (this.type() === "phone") return "0000-0000";
-    return "";
   }
 
   getInputMode(): string {
@@ -194,7 +210,7 @@ export class GbInputComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['value'] && !changes['value'].isFirstChange()) {
+    if (changes["value"] && !changes["value"].isFirstChange()) {
       this.model.set(this.value());
       this.valueLoaded.set(true);
     }
