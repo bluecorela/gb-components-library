@@ -1,9 +1,11 @@
 import { Component, computed, input } from "@angular/core";
+import { IonCol, IonRow } from "@ionic/angular/standalone";
 
 @Component({
   selector: "gb-stepper",
   templateUrl: "./gb-stepper.component.html",
   styleUrls: ["./gb-stepper.component.scss"],
+  imports: [IonRow, IonCol],
 })
 export class GbStepperComponent {
   // ##### INPUTS
@@ -22,8 +24,7 @@ export class GbStepperComponent {
   }
 
   strokeClass(index: number) {
-    let classes =
-      "absolute -right-[45px] top-[17px] block h-[2px] w-[80px] sm:-right-[60px] sm:top-[25px] sm:w-[120px]";
+    let classes = "";
     if (index < this.current()) classes += " bg-gb-pink-500";
     else classes += " bg-stroke";
     return classes;
