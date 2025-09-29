@@ -64,6 +64,7 @@ export class GbTextAreaComponent implements OnInit, OnChanges {
   requiredMessages = input<string>("");
   identity = input("");
   regexMessages = input<string[]>();
+  max = input<number | null>(null);
   forceError = input({
     force: signal(false),
     msg: signal(""),
