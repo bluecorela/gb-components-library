@@ -8,7 +8,7 @@
 }
 <div class="relative">
   <input
-    [type]="isMaskedType() ? 'text' : inType()"
+    [type]="inType()"
     [class]="classes()"
     [placeholder]="placeholder()"
     [autocapitalize]="autocapitalize()"
@@ -18,15 +18,11 @@
     [disabled]="disabled()"
     [id]="identity()"
     [attr.data-test]="identity() + '-gb-input'"
-    [mask]="getMask()"
-    [thousandSeparator]="type() === 'money' ? ',' : ''"
-    [decimalMarker]="'.'"
-    [dropSpecialCharacters]="isMaskedType() ? false : null"
-    [prefix]="prefix()"
     [attr.inputmode]="getInputMode()"
+    (keyup)="keyPress()"
     #gbInput
   />
-  
+
   <gb-icon
     [icon]="icon()"
     color="gb-gray-dark-600"
@@ -83,11 +79,8 @@
   </p>
 }
 
-
 @if (requiredMessages() !== ""  && this.required() && !this.model() && this.focused()) {
-  <p
-    class="text-gb-error-500 mt-[5px] text-sm"
-  >
+  <p class="text-gb-error-500 mt-[5px] text-sm">
     {{
     requiredMessages() }}
   </p>
@@ -117,4 +110,3 @@
     }
   </ul>
 }
-
