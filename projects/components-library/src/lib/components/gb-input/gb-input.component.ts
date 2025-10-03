@@ -81,6 +81,7 @@ export class GbInputComponent implements OnInit, OnChanges {
     force: signal(false),
     msg: signal(""),
   });
+  maxlength = input("");
 
   // ##### SIGNALS
   model = signal<string>("");
